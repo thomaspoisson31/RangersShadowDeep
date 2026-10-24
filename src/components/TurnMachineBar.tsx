@@ -2,7 +2,15 @@ import React from 'react';
 import { useGameStore } from '../store/useGameStore';
 import { Shield, FastForward, Bot, ScrollText, Users } from 'lucide-react';
 
-export const TurnMachineBar: React.FC = () => {
+interface TurnMachineBarProps {
+  isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
+}
+
+export const TurnMachineBar: React.FC<TurnMachineBarProps> = ({
+  isCollapsed = false,
+  onToggleCollapse,
+}) => {
   const {
     turnNumber,
     currentPhase,
@@ -31,6 +39,29 @@ export const TurnMachineBar: React.FC = () => {
     }
   };
 
+  if (isCollapsed) {
+    return (
+      <div className="bg-stone-900/80 border-b border-amber-900/30 px-4 py-1 flex items-center justify-between gap-2 backdrop-blur-md z-30 text-xs">
+        <div className="flex items-center gap-2">
+          <Shield className="w-4 h-4 text-amber-500" />
+          <span className="font-bold text-amber-300">
+            Turn {turnNumber}
+          </span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${getPhaseColor(currentPhase)}`}>
+            {currentPhase.toUpperCase()}
+          </span>
+        </div>
+        <button
+          onClick={onToggleCollapse}
+          className="text-stone-400 hover:text-amber-400 px-2 py-0.5 rounded text-[11px] font-semibold bg-stone-800 border border-stone-700"
+          title="Expand Turn Machine Bar"
+        >
+          ▼ Show Turn Info
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-stone-900/90 border-b border-amber-900/40 px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 backdrop-blur-md z-30">
       {/* Left: Active Scenario Info */}
@@ -58,6 +89,15 @@ export const TurnMachineBar: React.FC = () => {
 
       {/* Right: Phase Controls */}
       <div className="flex items-center gap-2">
+        {onToggleCollapse && (
+          <button
+            onClick={onToggleCollapse}
+            className="p-1.5 hover:bg-stone-800 rounded text-stone-400 hover:text-amber-400"
+            title="Collapse Turn Machine Bar"
+          >
+            ▲
+          </button>
+        )}
         {currentPhase === 'creature' && (
           <button
             onClick={executeAllCreaturesAI}

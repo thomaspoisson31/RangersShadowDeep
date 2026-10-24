@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { Token, BoardConfig, LogEntry, TurnPhase } from '../types/gameState';
 import type { Scenario, EventCardEntry } from '../types/gameData';
 import { getBestiaryEntry } from '../utils/gameDataLoader';
@@ -76,6 +77,11 @@ interface GameState {
   addLog: (message: string, type?: LogEntry['type'], details?: any) => void;
   clearLogs: () => void;
   resetGame: () => void;
+
+  // Import / Export Save State
+  exportGameState: () => string;
+  importGameState: (jsonString: string) => boolean;
+  exportLogsToTxt: () => string;
 }
 
 const defaultBoardConfig: BoardConfig = {
@@ -91,8 +97,10 @@ const defaultBoardConfig: BoardConfig = {
   gridSizeInches: 1.0,
 };
 
-export const useGameStore = create<GameState>((set, get) => ({
-  activeMissionIndex: 0,
+export const useGameStore = create<GameState>()(
+  persist(
+    (set, get) => ({
+      activeMissionIndex: 0,
   activeScenarioIndex: 1,
   activeScenario: null,
 
@@ -650,4 +658,75 @@ export const useGameStore = create<GameState>((set, get) => ({
       logs: [],
     });
   },
-}));
+
+  exportGameState: () => {
+    const state = get();
+    const saveData = {
+      version: '1.0',
+      timestamp: new Date().toISOString(),
+      activeMissionIndex: state.activeMissionIndex,
+      activeScenarioIndex: state.activeScenarioIndex,
+      activeScenario: state.activeScenario,
+      boardConfig: state.boardConfig,
+      tokens: state.tokens,
+      selectedTokenId: state.selectedTokenId,
+      turnNumber: state.turnNumber,
+      currentPhase: state.currentPhase,
+      eventDeck: state.eventDeck,
+      drawnEvents: state.drawnEvents,
+      logs: state.logs,
+    };
+    return JSON.stringify(saveData, null, 2);
+  },
+
+  importGameState: (jsonString: string) => {
+    try {
+      const data = JSON.parse(jsonString);
+      if (!data || typeof data !== 'object') return false;
+
+      set({
+        activeMissionIndex: data.activeMissionIndex ?? 0,
+        activeScenarioIndex: data.activeScenarioIndex ?? 1,
+        activeScenario: data.activeScenario ?? null,
+        boardConfig: data.boardConfig ?? defaultBoardConfig,
+        tokens: data.tokens ?? [],
+        selectedTokenId: data.selectedTokenId ?? null,
+        turnNumber: data.turnNumber ?? 1,
+        currentPhase: data.currentPhase ?? 'ranger',
+        eventDeck: data.eventDeck ?? [],
+        drawnEvents: data.drawnEvents ?? [],
+        logs: data.logs ?? [],
+      });
+      get().addLog('Partie chargée à partir du fichier de sauvegarde !', 'system');
+      return true;
+    } catch (e) {
+      console.error('Failed to import game state:', e);
+      return false;
+    }
+  },
+
+  exportLogsToTxt: () => {
+    const { logs } = get();
+    return logs
+      .map((l) => `[${l.timestamp}] [T${l.turnNumber} - ${l.phase.toUpperCase()}] ${l.type.toUpperCase()}: ${l.message}`)
+      .join('\n');
+  },
+}),
+    {
+      name: 'rosd_vtt_game_save',
+      partialize: (state) => ({
+        activeMissionIndex: state.activeMissionIndex,
+        activeScenarioIndex: state.activeScenarioIndex,
+        activeScenario: state.activeScenario,
+        boardConfig: state.boardConfig,
+        tokens: state.tokens,
+        selectedTokenId: state.selectedTokenId,
+        turnNumber: state.turnNumber,
+        currentPhase: state.currentPhase,
+        eventDeck: state.eventDeck,
+        drawnEvents: state.drawnEvents,
+        logs: state.logs,
+      }),
+    }
+  )
+);

@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../store/useGameStore';
-import { Crosshair, Swords, Search, Activity, ScrollText, Trash2, Dices } from 'lucide-react';
+import { Crosshair, Swords, Search, Activity, ScrollText, Trash2, Dices, ChevronRight, ChevronLeft } from 'lucide-react';
 
-export const ActionControlsDrawer: React.FC = () => {
+interface ActionControlsDrawerProps {
+  isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
+}
+
+export const ActionControlsDrawer: React.FC<ActionControlsDrawerProps> = ({
+  isCollapsed = false,
+  onToggleCollapse,
+}) => {
   const {
     tokens,
     selectedTokenId,
@@ -24,8 +32,32 @@ export const ActionControlsDrawer: React.FC = () => {
   const eligibleTargets = tokens.filter((t) => t.id !== selectedTokenId && (t.currentHp ?? 1) > 0);
   const eligibleClues = tokens.filter((t) => t.category === 'clue' && !t.status.isSearched);
 
+  if (isCollapsed) {
+    return (
+      <div className="relative z-30">
+        <button
+          onClick={onToggleCollapse}
+          className="absolute right-0 top-4 bg-stone-900/90 border-l border-t border-b border-amber-900/40 p-2 rounded-l-lg text-amber-400 hover:bg-stone-800 shadow-xl backdrop-blur-md flex items-center gap-1 text-xs font-semibold"
+          title="Expand Actions & Logs Drawer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          <Activity className="w-4 h-4" />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-80 h-full bg-stone-900/95 border-l border-amber-900/40 p-4 flex flex-col gap-4 text-xs text-stone-200 overflow-hidden backdrop-blur-md z-30">
+    <div className="w-80 h-full bg-stone-900/95 border-l border-amber-900/40 p-4 flex flex-col gap-4 text-xs text-stone-200 overflow-hidden backdrop-blur-md z-30 relative">
+      {onToggleCollapse && (
+        <button
+          onClick={onToggleCollapse}
+          className="absolute left-2 top-2 p-1 text-stone-400 hover:text-amber-400 hover:bg-stone-800 rounded z-40"
+          title="Collapse Actions Drawer"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      )}
 
       {/* Selected Token Section */}
       <div className="bg-stone-950 p-3 rounded-lg border border-amber-900/30 space-y-3">
