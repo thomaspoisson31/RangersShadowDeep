@@ -4,7 +4,69 @@
   "system": "Rangers of Shadow Deep",
   "format_specification": {
     "description": "Algorithmic representation of scenarios, bestiary, items, companions, and campaign procedures.",
-    "target_use_case": "Game engine interpretation, Virtual Tabletop (VTT) automation, AI solo emulation."
+    "target_use_case": "Game engine interpretation, Virtual Tabletop (VTT) automation, AI solo emulation.",
+    "terrain_positioning_schema": {
+      "coordinate_system": "Origin (0,0) is Top-Left of the table canvas. Axes: X increases eastward/right, Y increases southward/down. Units are in inches (1 foot = 12 inches).",
+      "position_types": {
+        "fixed_coordinates": {
+          "required_fields": [
+            "x_inches",
+            "y_inches"
+          ],
+          "optional_fields": [
+            "rotation_degrees",
+            "z_elevation_inches"
+          ]
+        },
+        "radial_distribution": {
+          "required_fields": [
+            "origin",
+            "radius_inches"
+          ],
+          "optional_fields": [
+            "angle_degrees",
+            "quantity",
+            "min_distance_to_heroes_inches"
+          ]
+        },
+        "edge_offset": {
+          "required_fields": [
+            "edge",
+            "distance_from_edge_inches"
+          ],
+          "optional_fields": [
+            "offset_along_edge_inches",
+            "orientation"
+          ]
+        },
+        "line_segment": {
+          "required_fields": [
+            "start_point",
+            "end_point",
+            "width_inches"
+          ]
+        },
+        "zone_bounds": {
+          "required_fields": [
+            "x_min_inches",
+            "x_max_inches",
+            "y_min_inches",
+            "y_max_inches"
+          ]
+        },
+        "procedural_scatter": {
+          "required_fields": [
+            "count",
+            "zone_bounds",
+            "min_separation_inches"
+          ],
+          "optional_fields": [
+            "density",
+            "avoid_zones"
+          ]
+        }
+      }
+    }
   },
   "core_rules_reference": {
     "turn_phases": [
@@ -1469,14 +1531,187 @@
             },
             "terrain": [
               {
-                "type": "small_building",
-                "quantity": "4-5",
-                "layout": "circle_around_center",
-                "min_distance_to_heroes_inches": 6.0
+                "id": "bldg_village_1",
+                "name": "Small Village House 1",
+                "type": "building",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 6.0,
+                  "length": 6.0,
+                  "height": 4.0
+                },
+                "position": {
+                  "type": "radial_distribution",
+                  "origin": {
+                    "x_inches": 18.0,
+                    "y_inches": 18.0
+                  },
+                  "radius_inches": 11.0,
+                  "angle_degrees": 45.0,
+                  "min_distance_to_heroes_inches": 6.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "rough_ground": false,
+                  "interactive_door": {
+                    "id": "door_bldg_1",
+                    "locked": true,
+                    "pick_lock_tn": 8,
+                    "strength_tn": 8,
+                    "contains_clue_marker": true
+                  }
+                }
               },
               {
-                "type": "scattered_trees_rocks_stream",
-                "density": "medium"
+                "id": "bldg_village_2",
+                "name": "Small Village House 2",
+                "type": "building",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 6.0,
+                  "length": 6.0,
+                  "height": 4.0
+                },
+                "position": {
+                  "type": "radial_distribution",
+                  "origin": {
+                    "x_inches": 18.0,
+                    "y_inches": 18.0
+                  },
+                  "radius_inches": 11.0,
+                  "angle_degrees": 135.0,
+                  "min_distance_to_heroes_inches": 6.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "rough_ground": false,
+                  "interactive_door": {
+                    "id": "door_bldg_2",
+                    "locked": true,
+                    "pick_lock_tn": 8,
+                    "strength_tn": 8,
+                    "contains_clue_marker": true
+                  }
+                }
+              },
+              {
+                "id": "bldg_village_3",
+                "name": "Small Village House 3",
+                "type": "building",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 6.0,
+                  "length": 6.0,
+                  "height": 4.0
+                },
+                "position": {
+                  "type": "radial_distribution",
+                  "origin": {
+                    "x_inches": 18.0,
+                    "y_inches": 18.0
+                  },
+                  "radius_inches": 12.0,
+                  "angle_degrees": 225.0,
+                  "min_distance_to_heroes_inches": 6.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "rough_ground": false,
+                  "interactive_door": {
+                    "id": "door_bldg_3",
+                    "locked": false,
+                    "contains_clue_marker": false
+                  }
+                }
+              },
+              {
+                "id": "bldg_village_4",
+                "name": "Small Village House 4",
+                "type": "building",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 6.0,
+                  "length": 6.0,
+                  "height": 4.0
+                },
+                "position": {
+                  "type": "radial_distribution",
+                  "origin": {
+                    "x_inches": 18.0,
+                    "y_inches": 18.0
+                  },
+                  "radius_inches": 12.0,
+                  "angle_degrees": 315.0,
+                  "min_distance_to_heroes_inches": 6.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "rough_ground": false,
+                  "interactive_door": {
+                    "id": "door_bldg_4",
+                    "locked": false,
+                    "contains_clue_marker": false
+                  }
+                }
+              },
+              {
+                "id": "scatter_village_nature",
+                "name": "Village Peripheral Nature Scatter",
+                "type": "scatter_group",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "coverage": "table_wide"
+                },
+                "position": {
+                  "type": "procedural_scatter",
+                  "count": {
+                    "min": 8,
+                    "max": 12
+                  },
+                  "zone_bounds": {
+                    "x_min_inches": 2.0,
+                    "x_max_inches": 34.0,
+                    "y_min_inches": 2.0,
+                    "y_max_inches": 34.0
+                  },
+                  "min_separation_inches": 4.0,
+                  "avoid_zones": [
+                    "center_hero_deployment_r3",
+                    "village_buildings"
+                  ]
+                },
+                "properties": {
+                  "elements": [
+                    {
+                      "type": "tree",
+                      "shape": "circle",
+                      "radius_inches": 1.5,
+                      "blocks_movement": true,
+                      "blocks_los": true
+                    },
+                    {
+                      "type": "rock_cluster",
+                      "shape": "box",
+                      "width_inches": 2.5,
+                      "length_inches": 2.0,
+                      "blocks_movement": false,
+                      "rough_ground": true,
+                      "blocks_los": false
+                    },
+                    {
+                      "type": "narrow_stream",
+                      "shape": "line",
+                      "width_inches": 2.0,
+                      "blocks_movement": false,
+                      "rough_ground": true,
+                      "blocks_los": false
+                    }
+                  ]
+                }
               }
             ],
             "markers": [
@@ -1751,14 +1986,124 @@
             },
             "terrain": [
               {
+                "id": "nest_tree_1",
+                "name": "Spider Nest Tree 1",
                 "type": "nest_tree",
-                "quantity": 4,
-                "placement": "within_6_inches_of_one_edge",
-                "min_separation_inches": 6.0
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 2.0,
+                  "height": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 5.0,
+                  "y_inches": 4.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "burnable": true,
+                  "burned": false,
+                  "flammable_action_cost": 1
+                }
               },
               {
-                "type": "dense_briar_patches_and_trees",
-                "density": "medium"
+                "id": "nest_tree_2",
+                "name": "Spider Nest Tree 2",
+                "type": "nest_tree",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 2.0,
+                  "height": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 11.5,
+                  "y_inches": 3.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "burnable": true,
+                  "burned": false,
+                  "flammable_action_cost": 1
+                }
+              },
+              {
+                "id": "nest_tree_3",
+                "name": "Spider Nest Tree 3",
+                "type": "nest_tree",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 2.0,
+                  "height": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 18.5,
+                  "y_inches": 5.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "burnable": true,
+                  "burned": false,
+                  "flammable_action_cost": 1
+                }
+              },
+              {
+                "id": "nest_tree_4",
+                "name": "Spider Nest Tree 4",
+                "type": "nest_tree",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 2.0,
+                  "height": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 25.0,
+                  "y_inches": 3.5
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "burnable": true,
+                  "burned": false,
+                  "flammable_action_cost": 1
+                }
+              },
+              {
+                "id": "forest_briars_scatter",
+                "name": "Dense Briars and Woods",
+                "type": "scatter_group",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "coverage": "throughout_forest"
+                },
+                "position": {
+                  "type": "procedural_scatter",
+                  "count": {
+                    "min": 10,
+                    "max": 14
+                  },
+                  "zone_bounds": {
+                    "x_min_inches": 2.0,
+                    "x_max_inches": 28.0,
+                    "y_min_inches": 8.0,
+                    "y_max_inches": 26.0
+                  },
+                  "min_separation_inches": 3.5,
+                  "avoid_zones": [
+                    "cocoon_markers",
+                    "nest_trees"
+                  ]
+                },
+                "properties": {
+                  "rough_ground": true,
+                  "blocks_los": true,
+                  "blocks_movement": false
+                }
               }
             ],
             "markers": [
@@ -1980,30 +2325,145 @@
             },
             "terrain": [
               {
-                "type": "river",
-                "name": "Enthel River",
-                "placement": "parallel to edge, 6 inches in, shock cold / deep water"
+                "id": "river_enthel",
+                "name": "River Enthel",
+                "type": "waterway",
+                "shape": "line",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 30.0
+                },
+                "position": {
+                  "type": "line_segment",
+                  "start_point": {
+                    "x_inches": 0.0,
+                    "y_inches": 24.0
+                  },
+                  "end_point": {
+                    "x_inches": 30.0,
+                    "y_inches": 24.0
+                  },
+                  "width_inches": 4.0
+                },
+                "properties": {
+                  "water_type": "deep_cold",
+                  "blocks_movement": true,
+                  "passable_at": [
+                    "stone_bridge_center",
+                    "shallow_ford_west"
+                  ],
+                  "hazard_rules": "Figure entering must make Swimming/Will test or suffer cold shock damage"
+                }
               },
               {
-                "type": "stone_bridge",
-                "placement": "table center across river"
+                "id": "stone_bridge_center",
+                "name": "Old Stone Bridge",
+                "type": "bridge",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 6.0,
+                  "height": 1.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 24.0,
+                  "rotation_degrees": 0.0
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "blocks_los": false,
+                  "rough_ground": false
+                }
               },
               {
+                "id": "shallow_ford_west",
+                "name": "Shallow River Ford",
                 "type": "ford",
-                "placement": "3 inches from one table edge across river"
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 3.0,
+                  "length": 4.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 3.0,
+                  "y_inches": 24.0
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "blocks_los": false,
+                  "rough_ground": true
+                }
               },
               {
+                "id": "gnoll_camp",
+                "name": "Gnoll Outpost Camp",
                 "type": "camp",
-                "placement": "on smaller bank side near bridge",
-                "features": [
-                  "campfire",
-                  "bedrolls"
-                ]
+                "shape": "zone",
+                "dimensions_inches": {
+                  "width": 8.0,
+                  "length": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 27.5
+                },
+                "properties": {
+                  "sub_elements": [
+                    {
+                      "type": "campfire",
+                      "shape": "circle",
+                      "radius_inches": 1.0,
+                      "offset": {
+                        "x": 0.0,
+                        "y": 0.0
+                      }
+                    },
+                    {
+                      "type": "bedrolls",
+                      "shape": "box",
+                      "count": 4,
+                      "offset": {
+                        "x": 2.0,
+                        "y": 1.0
+                      }
+                    }
+                  ]
+                }
               },
               {
-                "type": "rocks_trees_shrubs",
-                "density": "dense_crowded",
-                "line_of_sight_restricted": true
+                "id": "dense_foliage_large_bank",
+                "name": "Dense Woods and Rocks (Large Bank)",
+                "type": "scatter_group",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "coverage": "northern_bank"
+                },
+                "position": {
+                  "type": "procedural_scatter",
+                  "count": {
+                    "min": 12,
+                    "max": 16
+                  },
+                  "zone_bounds": {
+                    "x_min_inches": 1.0,
+                    "x_max_inches": 29.0,
+                    "y_min_inches": 1.0,
+                    "y_max_inches": 20.0
+                  },
+                  "min_separation_inches": 3.5,
+                  "avoid_zones": [
+                    "bridge_approach"
+                  ]
+                },
+                "properties": {
+                  "blocks_los": true,
+                  "rough_ground": true,
+                  "blocks_movement": false
+                }
               }
             ],
             "hero_deployment": {
@@ -2240,7 +2700,167 @@
               "door": "Main Entrance",
               "max_figures": 4,
               "distance_inches": 1.0
-            }
+            },
+            "terrain": [
+              {
+                "id": "room_a_entrance",
+                "name": "Room A: Entrance Room",
+                "type": "dungeon_room",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 18.0,
+                  "length": 18.0,
+                  "wall_thickness_inches": 0.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 9.0,
+                  "y_inches": 9.0
+                },
+                "properties": {
+                  "enclosed": true,
+                  "doors": [
+                    {
+                      "id": "door_main_entrance",
+                      "position": {
+                        "x_inches": 0.0,
+                        "y_inches": 9.0
+                      },
+                      "locked": false
+                    },
+                    {
+                      "id": "door_a_to_b",
+                      "position": {
+                        "x_inches": 18.0,
+                        "y_inches": 9.0
+                      },
+                      "locked": true,
+                      "pick_lock_tn": 10,
+                      "strength_tn": 12
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "room_b_armoury",
+                "name": "Room B: The Armoury",
+                "type": "dungeon_room",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 18.0,
+                  "length": 18.0,
+                  "wall_thickness_inches": 0.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 27.0,
+                  "y_inches": 9.0
+                },
+                "properties": {
+                  "enclosed": true,
+                  "furniture": [
+                    {
+                      "id": "rack_1",
+                      "type": "weapon_rack",
+                      "dimensions_inches": {
+                        "width": 4.0,
+                        "length": 1.0
+                      },
+                      "position": {
+                        "x_inches": 22.0,
+                        "y_inches": 2.0
+                      }
+                    },
+                    {
+                      "id": "rack_2",
+                      "type": "weapon_rack",
+                      "dimensions_inches": {
+                        "width": 4.0,
+                        "length": 1.0
+                      },
+                      "position": {
+                        "x_inches": 32.0,
+                        "y_inches": 2.0
+                      }
+                    }
+                  ],
+                  "doors": [
+                    {
+                      "id": "door_b_from_a",
+                      "position": {
+                        "x_inches": 18.0,
+                        "y_inches": 9.0
+                      }
+                    },
+                    {
+                      "id": "door_b_to_c",
+                      "position": {
+                        "x_inches": 36.0,
+                        "y_inches": 9.0
+                      },
+                      "locked": true,
+                      "pick_lock_tn": 10,
+                      "strength_tn": 12
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "room_c_workshop",
+                "name": "Room C: The Shaman's Workshop",
+                "type": "dungeon_room",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 18.0,
+                  "length": 18.0,
+                  "wall_thickness_inches": 0.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 45.0,
+                  "y_inches": 9.0
+                },
+                "properties": {
+                  "enclosed": true,
+                  "furniture": [
+                    {
+                      "id": "flesh_golem_table",
+                      "type": "stone_slab_table",
+                      "dimensions_inches": {
+                        "width": 4.0,
+                        "length": 7.0
+                      },
+                      "position": {
+                        "x_inches": 45.0,
+                        "y_inches": 9.0
+                      },
+                      "blocks_movement": true,
+                      "rough_ground": false
+                    }
+                  ],
+                  "doors": [
+                    {
+                      "id": "door_c_from_b",
+                      "position": {
+                        "x_inches": 36.0,
+                        "y_inches": 9.0
+                      }
+                    },
+                    {
+                      "id": "stairs_to_upper_level",
+                      "type": "spiral_staircase",
+                      "dimensions_inches": {
+                        "radius": 2.5
+                      },
+                      "position": {
+                        "x_inches": 52.0,
+                        "y_inches": 9.0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           },
           "pre_scenario_checks": [
             {
@@ -2376,19 +2996,74 @@
             },
             "terrain": [
               {
-                "type": "tower_roof_walkway",
-                "outer_boundary": "wooden walkway ring with drop off to ground"
+                "id": "beacon_tower_parapet",
+                "name": "Tower Roof Walkway Ring",
+                "type": "parapet_walkway",
+                "shape": "polygon",
+                "dimensions_inches": {
+                  "outer_width": 30.0,
+                  "outer_length": 30.0,
+                  "walkway_width": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "elevation_inches": 30.0,
+                  "fall_hazard": "Climbing roll TN10 or take 5 damage falling off tower edge",
+                  "crenellations": {
+                    "blocks_los": false,
+                    "cover_bonus_fight": 2
+                  }
+                }
               },
               {
-                "type": "central_woodpile_beacon",
-                "placement": "table_center",
-                "features": [
-                  "chained_hostage_cannot_be_unbound"
-                ]
+                "id": "central_beacon_woodpile",
+                "name": "Central Beacon Woodpile",
+                "type": "beacon_pyre",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 6.0,
+                  "length": 6.0,
+                  "height": 3.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "burnable": true,
+                  "interactive_hostage": {
+                    "name": "Chained Hostage",
+                    "status": "cannot_be_unbound_during_scenario",
+                    "rules": "Target of Shadow Knight sacrifice; if lit or sacrificed, scenario fails"
+                  }
+                }
               },
               {
-                "type": "trapdoor_stairs",
-                "placement": "walkway_corner"
+                "id": "stairwell_trapdoor",
+                "name": "Lower Level Trapdoor Stairs",
+                "type": "trapdoor",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 3.0,
+                  "length": 3.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 4.0,
+                  "y_inches": 4.0
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "blocks_los": false,
+                  "entry_point_heroes": true
+                }
               }
             ],
             "hero_deployment": {
@@ -2522,31 +3197,109 @@
             },
             "terrain": [
               {
-                "type": "sloping_stairs_path",
-                "width_inches": "3-4",
-                "placement": "center running top to bottom with slight curves"
+                "id": "broken_stairs_pathway",
+                "name": "Broken Stone Staircase",
+                "type": "pathway",
+                "shape": "polygon",
+                "dimensions_inches": {
+                  "width": 3.5,
+                  "length": 30.0
+                },
+                "position": {
+                  "type": "line_segment",
+                  "start_point": {
+                    "x_inches": 15.0,
+                    "y_inches": 0.0
+                  },
+                  "end_point": {
+                    "x_inches": 15.0,
+                    "y_inches": 30.0
+                  },
+                  "width_inches": 3.5
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "rough_ground": false,
+                  "slope_degrees": 25
+                }
               },
               {
-                "type": "fly_holes",
-                "quantity": 3,
-                "positions": [
-                  {
-                    "id": 1,
-                    "offset_inches": "6 inches from path, 14 inches down"
-                  },
-                  {
-                    "id": 2,
-                    "offset_inches": "6 inches opposite side, 20 inches down"
-                  },
-                  {
-                    "id": 3,
-                    "offset_inches": "6 inches same side as hole 1, 26 inches down"
-                  }
-                ]
+                "id": "fly_hole_1",
+                "name": "Fly Tunnel Hole 1",
+                "type": "spawn_hole",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 9.0,
+                  "y_inches": 14.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "spawn_trigger": "Turn 2, 4, 6"
+                }
               },
               {
-                "type": "steep_rocks_rough_ground",
-                "slope_degrees": 60
+                "id": "fly_hole_2",
+                "name": "Fly Tunnel Hole 2",
+                "type": "spawn_hole",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 21.0,
+                  "y_inches": 20.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "spawn_trigger": "Turn 2, 4, 6"
+                }
+              },
+              {
+                "id": "fly_hole_3",
+                "name": "Fly Tunnel Hole 3",
+                "type": "spawn_hole",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 9.0,
+                  "y_inches": 26.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "spawn_trigger": "Turn 2, 4, 6"
+                }
+              },
+              {
+                "id": "steep_cliff_chasm_zones",
+                "name": "Steep Rocky Slopes",
+                "type": "slope_zones",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "coverage": "all_areas_outside_stairs"
+                },
+                "position": {
+                  "type": "zone_bounds",
+                  "x_min_inches": 0.0,
+                  "x_max_inches": 30.0,
+                  "y_min_inches": 0.0,
+                  "y_max_inches": 30.0
+                },
+                "properties": {
+                  "slope_degrees": 60,
+                  "rough_ground": true,
+                  "climbing_checks_required": true
+                }
               }
             ],
             "hero_deployment": {
@@ -2658,18 +3411,65 @@
             },
             "terrain": [
               {
-                "type": "stairway_marker",
-                "placement": "center of one table edge"
+                "id": "stairway_exit_marker",
+                "name": "Descent Stairway Exit",
+                "type": "stairs_marker",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 2.0
+                },
+                "position": {
+                  "type": "edge_offset",
+                  "edge": "south",
+                  "distance_from_edge_inches": 1.0,
+                  "offset_along_edge_inches": 12.0
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "blocks_los": false,
+                  "hero_spawn_location": true
+                }
               },
               {
-                "type": "deep_water_belt",
-                "width_inches": 8.0,
-                "placement": "along stairway edge"
+                "id": "deep_water_belt",
+                "name": "Deep Water Canal",
+                "type": "deep_water",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 24.0,
+                  "length": 8.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 12.0,
+                  "y_inches": 20.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "passable_with_swimming_or_boat": true,
+                  "rough_ground": true
+                }
               },
               {
-                "type": "shallow_water_swamp",
-                "rough_ground": true,
-                "coverage": "remainder of table"
+                "id": "shallow_mire_swamp",
+                "name": "Shallow Swamp Mud and Reeds",
+                "type": "swamp",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "width": 24.0,
+                  "length": 16.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 12.0,
+                  "y_inches": 8.0
+                },
+                "properties": {
+                  "rough_ground": true,
+                  "movement_speed_multiplier": 0.5,
+                  "blocks_los": false
+                }
               }
             ],
             "hero_deployment": {
@@ -2863,17 +3663,116 @@
             },
             "terrain": [
               {
-                "type": "farmhouse",
-                "rooms": 2,
-                "placement": "table_center",
-                "features": [
-                  "doors",
-                  "windows"
-                ]
+                "id": "farmhouse_central",
+                "name": "Fortified Two-Room Farmhouse",
+                "type": "building",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 8.0,
+                  "length": 8.0,
+                  "height": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "rooms": [
+                    {
+                      "id": "room_1",
+                      "dimensions": {
+                        "width": 8.0,
+                        "length": 4.0
+                      }
+                    },
+                    {
+                      "id": "room_2",
+                      "dimensions": {
+                        "width": 8.0,
+                        "length": 4.0
+                      }
+                    }
+                  ],
+                  "doors": [
+                    {
+                      "id": "door_front",
+                      "position": {
+                        "x_inches": 15.0,
+                        "y_inches": 11.0
+                      }
+                    },
+                    {
+                      "id": "door_back",
+                      "position": {
+                        "x_inches": 15.0,
+                        "y_inches": 19.0
+                      }
+                    }
+                  ],
+                  "windows": [
+                    {
+                      "id": "win_north",
+                      "position": {
+                        "x_inches": 13.0,
+                        "y_inches": 11.0
+                      }
+                    },
+                    {
+                      "id": "win_south",
+                      "position": {
+                        "x_inches": 17.0,
+                        "y_inches": 19.0
+                      }
+                    },
+                    {
+                      "id": "win_east",
+                      "position": {
+                        "x_inches": 19.0,
+                        "y_inches": 13.0
+                      }
+                    },
+                    {
+                      "id": "win_west",
+                      "position": {
+                        "x_inches": 11.0,
+                        "y_inches": 17.0
+                      }
+                    }
+                  ]
+                }
               },
               {
-                "type": "scattered_trees_and_rocks",
-                "density": "medium"
+                "id": "farm_scatter_trees_rocks",
+                "name": "Orchard Trees and Boundary Stones",
+                "type": "scatter_group",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "coverage": "perimeter"
+                },
+                "position": {
+                  "type": "procedural_scatter",
+                  "count": {
+                    "min": 8,
+                    "max": 12
+                  },
+                  "zone_bounds": {
+                    "x_min_inches": 2.0,
+                    "x_max_inches": 28.0,
+                    "y_min_inches": 2.0,
+                    "y_max_inches": 28.0
+                  },
+                  "min_separation_inches": 4.0,
+                  "avoid_zones": [
+                    "farmhouse_central_r8"
+                  ]
+                },
+                "properties": {
+                  "blocks_los": true,
+                  "rough_ground": true
+                }
               }
             ],
             "markers": [
@@ -3073,7 +3972,74 @@
               "width_feet": 2.0,
               "length_feet": 3.0
             },
-            "terrain": "Three sections: main 2x2ft chamber with 3 dangling bodies; left locked 2x0.5ft room; right 2x0.5ft broken room with treasure token."
+            "terrain": [
+              {
+                "id": "gatehouse_main_chamber",
+                "name": "Gatehouse Main Chamber",
+                "type": "room",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 24.0,
+                  "length": 24.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 12.0,
+                  "y_inches": 12.0
+                },
+                "properties": {
+                  "features": [
+                    "3 dangling bodies from rafters (Point of Interest)"
+                  ],
+                  "blocks_los": false,
+                  "blocks_movement": false
+                }
+              },
+              {
+                "id": "gatehouse_left_room",
+                "name": "Guard Left Chamber",
+                "type": "room",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 24.0,
+                  "length": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 12.0,
+                  "y_inches": 27.0
+                },
+                "properties": {
+                  "locked_door": {
+                    "pick_lock_tn": 8,
+                    "strength_tn": 10
+                  },
+                  "blocks_los": true,
+                  "blocks_movement": true
+                }
+              },
+              {
+                "id": "gatehouse_right_room",
+                "name": "Breached Right Chamber",
+                "type": "room",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 24.0,
+                  "length": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 12.0,
+                  "y_inches": 33.0
+                },
+                "properties": {
+                  "breached_wall": true,
+                  "contains_treasure_token": true,
+                  "blocks_los": false,
+                  "blocks_movement": false
+                }
+              }
+            ]
           },
           "initial_enemies": [
             {
@@ -3143,7 +4109,88 @@
               "width_feet": 2.5,
               "length_feet": 2.5
             },
-            "terrain": "Smashed tower with 4-inch high second floor ledge, 4x4-inch side room, central 4-inch rubbish mound, stained glass window."
+            "terrain": [
+              {
+                "id": "smashed_tower_ledge",
+                "name": "Smashed Bell Tower & Second Floor Ledge",
+                "type": "raised_platform",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 8.0,
+                  "length": 8.0,
+                  "height": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 5.0,
+                  "y_inches": 5.0
+                },
+                "properties": {
+                  "elevation_inches": 4.0,
+                  "blocks_movement": false,
+                  "climb_tn": 8
+                }
+              },
+              {
+                "id": "chapel_side_room",
+                "name": "Vestry Side Room",
+                "type": "room",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 26.0,
+                  "y_inches": 4.0
+                },
+                "properties": {
+                  "unlocked_door": true,
+                  "blocks_los": true
+                }
+              },
+              {
+                "id": "central_rubbish_mound",
+                "name": "Central Fallen Debris Mound",
+                "type": "rubble_mound",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 4.0,
+                  "height": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "rough_ground": true,
+                  "elevation_inches": 4.0,
+                  "point_of_interest": "B"
+                }
+              },
+              {
+                "id": "stained_glass_window",
+                "name": "Intact Stained Glass Window",
+                "type": "wall_feature",
+                "shape": "line",
+                "dimensions_inches": {
+                  "width": 6.0,
+                  "length": 0.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 0.5
+                },
+                "properties": {
+                  "blocks_los": false,
+                  "destructible": true,
+                  "point_of_interest": "C"
+                }
+              }
+            ]
           },
           "points_of_interest": [
             {
@@ -3208,7 +4255,107 @@
               "width_feet": 2.5,
               "length_feet": 2.5
             },
-            "terrain": "Central brackish fountain with St. Emilia statue, 2 shacks, broken cart, scrawled wall."
+            "terrain": [
+              {
+                "id": "fountain_st_emilia",
+                "name": "Brackish Fountain & Statue of St. Emilia",
+                "type": "fountain",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 3.0,
+                  "height": 3.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "water_poisonous": true,
+                  "point_of_interest": "A",
+                  "blocks_movement": true,
+                  "blocks_los": false
+                }
+              },
+              {
+                "id": "courtyard_shack_west",
+                "name": "Ruined Outbuilding Shack West",
+                "type": "shack",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 5.0,
+                  "length": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 5.0,
+                  "y_inches": 6.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true
+                }
+              },
+              {
+                "id": "courtyard_shack_east",
+                "name": "Ruined Outbuilding Shack East",
+                "type": "shack",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 5.0,
+                  "length": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 25.0,
+                  "y_inches": 6.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true
+                }
+              },
+              {
+                "id": "broken_cart_debris",
+                "name": "Overturned Supply Cart",
+                "type": "obstacle",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 3.0,
+                  "length": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 8.0,
+                  "y_inches": 22.0
+                },
+                "properties": {
+                  "rough_ground": true,
+                  "provides_cover": true,
+                  "point_of_interest": "B"
+                }
+              },
+              {
+                "id": "scrawled_wall_south",
+                "name": "Courtyard Wall with Strange Runes",
+                "type": "wall",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 12.0,
+                  "length": 1.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 20.0,
+                  "y_inches": 29.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true,
+                  "point_of_interest": "C"
+                }
+              }
+            ]
           },
           "initial_enemies": [
             {
@@ -3308,7 +4455,90 @@
               "length_feet": 2.0
             },
             "floors": 2,
-            "terrain": "Flooded 1st level with bookcase island and stairs; 2nd level with desk, bookcases, 2 side rooms."
+            "terrain": [
+              {
+                "id": "library_floor_1_water",
+                "name": "Flooded Ground Floor",
+                "type": "water_floor",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "width": 24.0,
+                  "length": 24.0
+                },
+                "position": {
+                  "type": "zone_bounds",
+                  "x_min_inches": 0.0,
+                  "x_max_inches": 24.0,
+                  "y_min_inches": 0.0,
+                  "y_max_inches": 24.0
+                },
+                "properties": {
+                  "rough_ground": true,
+                  "water_depth_inches": 12.0,
+                  "hazard": "Sinking mud and floating debris"
+                }
+              },
+              {
+                "id": "bookcase_island_center",
+                "name": "Central Bookcase Island",
+                "type": "bookcase_island",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 6.0,
+                  "length": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 12.0,
+                  "y_inches": 12.0
+                },
+                "properties": {
+                  "elevation_inches": 2.0,
+                  "dry_ground": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "library_wooden_stairs",
+                "name": "Staircase to Upper Gallery",
+                "type": "stairs",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 3.0,
+                  "length": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 2.5,
+                  "y_inches": 2.5
+                },
+                "properties": {
+                  "connects_floors": [
+                    1,
+                    2
+                  ]
+                }
+              },
+              {
+                "id": "gallery_study_desk",
+                "name": "Librarian's Study Desk (Upper Level)",
+                "type": "desk",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 2.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 12.0,
+                  "y_inches": 4.0,
+                  "z_elevation_inches": 8.0
+                },
+                "properties": {
+                  "point_of_interest": "B"
+                }
+              }
+            ]
           },
           "points_of_interest": [
             {
@@ -3409,7 +4639,127 @@
               "width_feet": 2.5,
               "length_feet": 2.5
             },
-            "terrain": "Apothecary table center, Darkroot body in corner, 4 cupboards against walls."
+            "terrain": [
+              {
+                "id": "apothecary_table_center",
+                "name": "Central Apothecary Worktable",
+                "type": "table",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 5.0,
+                  "length": 3.0,
+                  "height": 2.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "point_of_interest": "B"
+                }
+              },
+              {
+                "id": "darkroot_corpse_corner",
+                "name": "Petrified Darkroot Corpse",
+                "type": "creature_corpse",
+                "shape": "circle",
+                "dimensions_inches": {
+                  "radius": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 3.0,
+                  "y_inches": 3.0
+                },
+                "properties": {
+                  "interactive": true,
+                  "spawn_point_darkroot": true
+                }
+              },
+              {
+                "id": "cupboard_north",
+                "name": "Medicine Cupboard North",
+                "type": "cupboard",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 1.0,
+                  "height": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 1.0
+                },
+                "properties": {
+                  "point_of_interest": "A",
+                  "blocks_movement": true
+                }
+              },
+              {
+                "id": "cupboard_south",
+                "name": "Medicine Cupboard South",
+                "type": "cupboard",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 1.0,
+                  "height": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 29.0
+                },
+                "properties": {
+                  "point_of_interest": "A",
+                  "blocks_movement": true
+                }
+              },
+              {
+                "id": "cupboard_east",
+                "name": "Medicine Cupboard East",
+                "type": "cupboard",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 1.0,
+                  "length": 4.0,
+                  "height": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 29.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "point_of_interest": "A",
+                  "blocks_movement": true
+                }
+              },
+              {
+                "id": "cupboard_west",
+                "name": "Medicine Cupboard West",
+                "type": "cupboard",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 1.0,
+                  "length": 4.0,
+                  "height": 5.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 1.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "point_of_interest": "A",
+                  "blocks_movement": true
+                }
+              }
+            ]
           },
           "initial_enemies": [
             {
@@ -3485,7 +4835,194 @@
               "width_feet": 2.5,
               "length_feet": 2.5
             },
-            "terrain": "Rows of 8 beds enveloped in web cocoons, stairs to upper floor."
+            "terrain": [
+              {
+                "id": "hospital_bed_1",
+                "name": "Hospital Bed 1 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 8.0,
+                  "y_inches": 4.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_bed_2",
+                "name": "Hospital Bed 2 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 8.0,
+                  "y_inches": 10.5
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_bed_3",
+                "name": "Hospital Bed 3 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 8.0,
+                  "y_inches": 17.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_bed_4",
+                "name": "Hospital Bed 4 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 8.0,
+                  "y_inches": 23.5
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_bed_5",
+                "name": "Hospital Bed 5 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 22.0,
+                  "y_inches": 4.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_bed_6",
+                "name": "Hospital Bed 6 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 22.0,
+                  "y_inches": 10.5
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_bed_7",
+                "name": "Hospital Bed 7 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 22.0,
+                  "y_inches": 17.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_bed_8",
+                "name": "Hospital Bed 8 (Webbed)",
+                "type": "webbed_bed",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 22.0,
+                  "y_inches": 23.5
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": false,
+                  "contains_cocoon": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "hospital_stairs",
+                "name": "Stairs to Upper Floor",
+                "type": "stairs",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 3.0,
+                  "length": 3.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 2.0,
+                  "y_inches": 2.0
+                },
+                "properties": {
+                  "blocks_movement": false
+                }
+              }
+            ]
           },
           "initial_enemies": [
             {
@@ -3576,7 +5113,84 @@
               "width_feet": 2.5,
               "length_feet": 2.5
             },
-            "terrain": "Desk with corpse of old nun, bookcases, broken shrine to St. Emilia."
+            "terrain": [
+              {
+                "id": "abbess_desk",
+                "name": "Carved Mahogany Desk with Nun Corpse",
+                "type": "desk",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 5.0,
+                  "length": 3.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 8.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "shrine_st_emilia",
+                "name": "Broken Marble Shrine to St. Emilia",
+                "type": "shrine",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 4.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 25.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "point_of_interest": "B"
+                }
+              },
+              {
+                "id": "abbess_bookcase_west",
+                "name": "Tall Heavy Bookcase West",
+                "type": "bookcase",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 1.0,
+                  "length": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 1.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true
+                }
+              },
+              {
+                "id": "abbess_bookcase_east",
+                "name": "Tall Heavy Bookcase East",
+                "type": "bookcase",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 1.0,
+                  "length": 6.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 29.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "blocks_los": true
+                }
+              }
+            ]
           },
           "points_of_interest": [
             {
@@ -3603,7 +5217,169 @@
               "width_feet": 2.5,
               "length_feet": 2.5
             },
-            "terrain": "Three narrow 1.5-inch walkways across floor chasms, 4 chests against far wall."
+            "terrain": [
+              {
+                "id": "dormitory_chasm_pit",
+                "name": "Collapsed Floor Chasm",
+                "type": "floor_chasm",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 30.0,
+                  "length": 18.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": true,
+                  "hazard_death_fall": true,
+                  "only_passable_via_walkways": true
+                }
+              },
+              {
+                "id": "chasm_walkway_west",
+                "name": "Narrow Wood Walkway West",
+                "type": "walkway_plank",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 1.5,
+                  "length": 18.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 6.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "acrobatics_or_fall_check": true
+                }
+              },
+              {
+                "id": "chasm_walkway_center",
+                "name": "Narrow Wood Walkway Center",
+                "type": "walkway_plank",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 1.5,
+                  "length": 18.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 15.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "acrobatics_or_fall_check": true
+                }
+              },
+              {
+                "id": "chasm_walkway_east",
+                "name": "Narrow Wood Walkway East",
+                "type": "walkway_plank",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 1.5,
+                  "length": 18.0
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 24.0,
+                  "y_inches": 15.0
+                },
+                "properties": {
+                  "blocks_movement": false,
+                  "acrobatics_or_fall_check": true
+                }
+              },
+              {
+                "id": "dormitory_chest_1",
+                "name": "Ironbound Storage Chest 1",
+                "type": "chest",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.5,
+                  "length": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 5.0,
+                  "y_inches": 28.0
+                },
+                "properties": {
+                  "locked": true,
+                  "pick_lock_tn": 7,
+                  "strength_tn": 10,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "dormitory_chest_2",
+                "name": "Ironbound Storage Chest 2",
+                "type": "chest",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.5,
+                  "length": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 11.5,
+                  "y_inches": 28.0
+                },
+                "properties": {
+                  "locked": true,
+                  "pick_lock_tn": 7,
+                  "strength_tn": 10,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "dormitory_chest_3",
+                "name": "Ironbound Storage Chest 3",
+                "type": "chest",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.5,
+                  "length": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 18.0,
+                  "y_inches": 28.0
+                },
+                "properties": {
+                  "locked": true,
+                  "pick_lock_tn": 7,
+                  "strength_tn": 10,
+                  "point_of_interest": "A"
+                }
+              },
+              {
+                "id": "dormitory_chest_4",
+                "name": "Ironbound Storage Chest 4",
+                "type": "chest",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 2.5,
+                  "length": 1.5
+                },
+                "position": {
+                  "type": "fixed_coordinates",
+                  "x_inches": 24.5,
+                  "y_inches": 28.0
+                },
+                "properties": {
+                  "locked": true,
+                  "pick_lock_tn": 7,
+                  "strength_tn": 10,
+                  "point_of_interest": "A"
+                }
+              }
+            ]
           },
           "points_of_interest": [
             {
@@ -3660,7 +5436,98 @@
               "width_feet": 2.5,
               "length_feet": 2.5
             },
-            "terrain": "Courtyard ruins with three escape exits across the table."
+            "terrain": [
+              {
+                "id": "exit_passage_west",
+                "name": "Courtyard Escape Archway West",
+                "type": "escape_exit",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 2.0
+                },
+                "position": {
+                  "type": "edge_offset",
+                  "edge": "north",
+                  "distance_from_edge_inches": 1.0,
+                  "offset_along_edge_inches": 5.0
+                },
+                "properties": {
+                  "exit_id": 1,
+                  "blocks_movement": false
+                }
+              },
+              {
+                "id": "exit_passage_center",
+                "name": "Courtyard Escape Archway Center",
+                "type": "escape_exit",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 2.0
+                },
+                "position": {
+                  "type": "edge_offset",
+                  "edge": "north",
+                  "distance_from_edge_inches": 1.0,
+                  "offset_along_edge_inches": 15.0
+                },
+                "properties": {
+                  "exit_id": 2,
+                  "blocks_movement": false
+                }
+              },
+              {
+                "id": "exit_passage_east",
+                "name": "Courtyard Escape Archway East",
+                "type": "escape_exit",
+                "shape": "box",
+                "dimensions_inches": {
+                  "width": 4.0,
+                  "length": 2.0
+                },
+                "position": {
+                  "type": "edge_offset",
+                  "edge": "north",
+                  "distance_from_edge_inches": 1.0,
+                  "offset_along_edge_inches": 25.0
+                },
+                "properties": {
+                  "exit_id": 3,
+                  "blocks_movement": false
+                }
+              },
+              {
+                "id": "ruined_colonnades_scatter",
+                "name": "Ruined Pillars and Broken Walls",
+                "type": "scatter_group",
+                "shape": "zone",
+                "dimensions_inches": {
+                  "coverage": "central_courtyard"
+                },
+                "position": {
+                  "type": "procedural_scatter",
+                  "count": {
+                    "min": 8,
+                    "max": 12
+                  },
+                  "zone_bounds": {
+                    "x_min_inches": 4.0,
+                    "x_max_inches": 26.0,
+                    "y_min_inches": 8.0,
+                    "y_max_inches": 24.0
+                  },
+                  "min_separation_inches": 4.0,
+                  "avoid_zones": [
+                    "exit_archways"
+                  ]
+                },
+                "properties": {
+                  "blocks_los": true,
+                  "rough_ground": true
+                }
+              }
+            ]
           },
           "initial_enemies": [
             {
