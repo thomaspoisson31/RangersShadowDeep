@@ -14,7 +14,9 @@ const defaultSettings: LLMSettings = {
 
 interface SettingsState {
   settings: LLMSettings;
+  view3dAngle: number; // View angle in degrees (default 30)
   updateSettings: (partial: Partial<LLMSettings>) => void;
+  setView3dAngle: (angle: number) => void;
   resetSettings: () => void;
 }
 
@@ -51,6 +53,8 @@ const loadSavedSettings = (): LLMSettings => {
 
 export const useSettingsStore = create<SettingsState>((set) => ({
   settings: loadSavedSettings(),
+  view3dAngle: 30,
+  setView3dAngle: (angle) => set({ view3dAngle: angle }),
   updateSettings: (partial) => {
     set((state) => {
       const next = { ...state.settings, ...partial };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSettingsStore } from '../store/useSettingsStore';
-import { Settings, Key, Sliders, Globe, Eye, EyeOff, Save, X } from 'lucide-react';
+import { Settings, Key, Sliders, Globe, Eye, EyeOff, Save, X, Box } from 'lucide-react';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -8,7 +8,7 @@ interface SettingsModalProps {
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
-  const { settings, updateSettings, resetSettings } = useSettingsStore();
+  const { settings, updateSettings, resetSettings, view3dAngle, setView3dAngle } = useSettingsStore();
   const [showKey, setShowKey] = useState<boolean>(false);
 
   if (!isOpen) return null;
@@ -117,6 +117,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             step="0.05"
             value={settings.temperature}
             onChange={(e) => updateSettings({ temperature: parseFloat(e.target.value) })}
+            className="w-full accent-amber-500 cursor-pointer"
+          />
+        </div>
+
+        {/* 3D View Angle Slider */}
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-xs font-semibold text-amber-500 flex items-center gap-1">
+              <Box className="w-3.5 h-3.5" /> Angle de vision 3D: {view3dAngle}°
+            </label>
+            <span className="text-[10px] text-stone-400">
+              (Par défaut: 30°)
+            </span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="45"
+            step="5"
+            value={view3dAngle}
+            onChange={(e) => setView3dAngle(Number(e.target.value))}
             className="w-full accent-amber-500 cursor-pointer"
           />
         </div>

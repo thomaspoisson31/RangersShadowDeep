@@ -2,9 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Stage, Layer, Image as KonvaImage, Line, Circle, Text as KonvaText, Group, Rect } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import { useGameStore } from '../store/useGameStore';
-import { ZoomIn, ZoomOut, RotateCcw, Ruler, MousePointer, Move, Scale } from 'lucide-react';
+import { useSettingsStore } from '../store/useSettingsStore';
+import { ZoomIn, ZoomOut, RotateCcw, Ruler, MousePointer, Move, Scale, Box, Heart, Shield, Swords, Crosshair, X } from 'lucide-react';
 
-export const VttCanvas: React.FC = () => {
+interface VttCanvasProps {
+  is3dView?: boolean;
+  onToggle3dView?: () => void;
+}
+
+export const VttCanvas: React.FC<VttCanvasProps> = ({
+  is3dView = false,
+  onToggle3dView,
+}) => {
+  const { view3dAngle } = useSettingsStore();
   const {
     boardConfig,
     tokens,
@@ -240,6 +250,21 @@ export const VttCanvas: React.FC = () => {
           Upload Map Image
           <input type="file" accept="image/*" onChange={handleMapUpload} className="hidden" />
         </label>
+
+        <div className="h-4 w-px bg-stone-700 my-auto" />
+
+        {/* 3D View Toggle */}
+        {onToggle3dView && (
+          <button
+            onClick={onToggle3dView}
+            className={`p-2 rounded flex items-center gap-1 font-semibold transition-colors ${
+              is3dView ? 'bg-amber-800 text-amber-100' : 'hover:bg-stone-800 text-stone-400'
+            }`}
+            title="Toggle 3D Angle View"
+          >
+            <Box className="w-4 h-4" /> Vue 3D ({view3dAngle}°)
+          </button>
+        )}
       </div>
 
       {/* Scale & Measure Display Badge */}
@@ -253,26 +278,95 @@ export const VttCanvas: React.FC = () => {
         )}
       </div>
 
-      {/* Konva 2D Canvas Stage */}
-      <Stage
-        ref={stageRef}
-        width={window.innerWidth}
-        height={window.innerHeight}
-        scaleX={stageScale}
-        scaleY={stageScale}
-        x={stagePos.x}
-        y={stagePos.y}
-        draggable={activeTool === 'pan'}
-        onWheel={handleWheel}
-        onMouseDown={handleStageMouseDown}
-        onMouseMove={handleStageMouseMove}
-        onMouseUp={handleStageMouseUp}
-        onDragEnd={(e) => {
-          if (e.target === stageRef.current) {
-            setStagePos({ x: e.target.x(), y: e.target.y() });
-          }
-        }}
+      {/* Token Quick Stat Overlay Card for Selected Token */}
+      {selectedTokenId && (() => {
+        const token = tokens.find((t) => t.id === selectedTokenId);
+        if (!token) return null;
+        return (
+          <div className="absolute top-16 right-4 z-20 bg-stone-900/95 border border-amber-900/60 p-3 rounded-xl backdrop-blur-md shadow-2xl text-xs text-stone-200 max-w-xs space-y-2 animate-in fade-in">
+            <div className="flex items-center justify-between border-b border-stone-800 pb-1.5">
+              <div className="flex items-center gap-2 font-bold text-amber-400">
+                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: token.color || '#d97706' }} />
+                <span>{token.name}</span>
+              </div>
+              <button
+                onClick={() => selectToken(null)}
+                className="p-1 text-stone-500 hover:text-stone-300 rounded"
+                title="Désélectionner (fermer)"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="grid grid-cols-4 gap-1 text-center font-mono text-[11px] bg-stone-950 p-1.5 rounded border border-stone-800">
+              <div>
+                <span className="text-stone-500 block text-[9px]">PV</span>
+                <span className="font-bold text-rose-400 flex items-center justify-center gap-0.5">
+                  <Heart className="w-2.5 h-2.5 fill-rose-500" />
+                  {token.currentHp ?? '-'}/{token.maxHp ?? '-'}
+                </span>
+              </div>
+              <div>
+                <span className="text-stone-500 block text-[9px]">Armure</span>
+                <span className="font-bold text-blue-400 flex items-center justify-center gap-0.5">
+                  <Shield className="w-2.5 h-2.5 text-blue-400" />
+                  {token.armor ?? token.stats?.Armour ?? '-'}
+                </span>
+              </div>
+              <div>
+                <span className="text-stone-500 block text-[9px]">Combat</span>
+                <span className="font-bold text-amber-300 flex items-center justify-center gap-0.5">
+                  <Swords className="w-2.5 h-2.5 text-amber-400" />
+                  +{token.fight ?? token.stats?.Fight ?? 0}
+                </span>
+              </div>
+              <div>
+                <span className="text-stone-500 block text-[9px]">Tir</span>
+                <span className="font-bold text-emerald-400 flex items-center justify-center gap-0.5">
+                  <Crosshair className="w-2.5 h-2.5 text-emerald-400" />
+                  +{token.shoot ?? token.stats?.Shoot ?? 0}
+                </span>
+              </div>
+            </div>
+            <div className="text-[10px] text-stone-400 flex justify-between">
+              <span>Catégorie: <strong className="capitalize text-stone-300">{token.category}</strong></span>
+              <span>Pos: ({token.x.toFixed(1)}", {token.y.toFixed(1)}")</span>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Konva Stage Container with 3D perspective wrapper */}
+      <div
+        className="w-full h-full transition-transform duration-500 origin-center"
+        style={
+          is3dView
+            ? {
+                perspective: '1200px',
+                transformStyle: 'preserve-3d',
+                transform: `rotateX(${view3dAngle}deg) scale(0.9) translateY(-20px)`,
+              }
+            : {}
+        }
       >
+        <Stage
+          ref={stageRef}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          scaleX={stageScale}
+          scaleY={stageScale}
+          x={stagePos.x}
+          y={stagePos.y}
+          draggable={activeTool === 'pan'}
+          onWheel={handleWheel}
+          onMouseDown={handleStageMouseDown}
+          onMouseMove={handleStageMouseMove}
+          onMouseUp={handleStageMouseUp}
+          onDragEnd={(e) => {
+            if (e.target === stageRef.current) {
+              setStagePos({ x: e.target.x(), y: e.target.y() });
+            }
+          }}
+        >
         {/* Layer 1: Background & Grid */}
         <Layer>
           {/* Outer Table Boundary Rect */}
@@ -342,8 +436,20 @@ export const VttCanvas: React.FC = () => {
                   const newYInches = e.target.y() / ppi;
                   moveToken(token.id, newXInches, newYInches);
                 }}
-                onClick={() => selectToken(token.id)}
-                onTap={() => selectToken(token.id)}
+                onClick={() => {
+                  if (selectedTokenId === token.id) {
+                    selectToken(null);
+                  } else {
+                    selectToken(token.id);
+                  }
+                }}
+                onTap={() => {
+                  if (selectedTokenId === token.id) {
+                    selectToken(null);
+                  } else {
+                    selectToken(token.id);
+                  }
+                }}
               >
                 {/* Engagement Circle / Highlight Ring */}
                 {isSelected && (
@@ -457,6 +563,7 @@ export const VttCanvas: React.FC = () => {
           )}
         </Layer>
       </Stage>
+      </div>
 
       {/* Scale Calibration Modal */}
       {showCalibModal && (
