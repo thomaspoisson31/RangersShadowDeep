@@ -1,0 +1,3742 @@
+{
+  "title": "Rangers of Shadow Deep - Complete Campaign & Engine Data",
+  "version": "1.0.0",
+  "system": "Rangers of Shadow Deep",
+  "format_specification": {
+    "description": "Algorithmic representation of scenarios, bestiary, items, companions, and campaign procedures.",
+    "target_use_case": "Game engine interpretation, Virtual Tabletop (VTT) automation, AI solo emulation."
+  },
+  "core_rules_reference": {
+    "turn_phases": [
+      {
+        "order": 1,
+        "phase": "Ranger Phase",
+        "description": "Rangers activate in any order. Each ranger can activate up to 2 companions within 3 inches."
+      },
+      {
+        "order": 2,
+        "phase": "Creature Phase",
+        "description": "All enemy and neutral AI creatures activate in descending order of current Health."
+      },
+      {
+        "order": 3,
+        "phase": "Companion Phase",
+        "description": "Companions that did not activate in the Ranger Phase now activate."
+      },
+      {
+        "order": 4,
+        "phase": "Event Phase",
+        "description": "Draw one Event Card (or as specified by scenario rules)."
+      }
+    ],
+    "creature_ai_flowchart": [
+      {
+        "step": 1,
+        "condition": "In hand-to-hand combat?",
+        "action_true": "Attack opponent. If winner, stay in combat; do not use second action."
+      },
+      {
+        "step": 2,
+        "condition": "Hero in Line of Sight?",
+        "action_true": "If armed with missile weapon and in range, shoot at closest hero, then reload if crossbow. Else move full distance toward closest hero."
+      },
+      {
+        "step": 3,
+        "condition": "No hero in LOS, Target Point exists?",
+        "action_true": "Move full speed toward Target Point."
+      },
+      {
+        "step": 4,
+        "condition": "No Target Point?",
+        "action_true": "Move (1d20 / 2) inches in random direction (using clock face or scatter die)."
+      }
+    ],
+    "combat_and_damage": {
+      "melee_resolution": "Simultaneous d20 + Fight vs d20 + Fight. Winner scores damage = (Total Combat Score + Damage Modifiers) - Loser Armour.",
+      "critical_hits": "Natural 20 on die roll automatically wins and adds +5 damage. Evil creatures cannot score critical hits.",
+      "shooting_modifiers": {
+        "light_cover": 2,
+        "heavy_cover": 4,
+        "hurried_shot": 1,
+        "large_target": -2
+      },
+      "swimming_modifiers": {
+        "light_armour": -2,
+        "heavy_armour": -5,
+        "shield": -1,
+        "carrying_treasure": -2
+      },
+      "falling_damage": "Damage = floor(inches_fallen * 1.5). Falling 3 inches or less deals no damage."
+    }
+  },
+  "bestiary": [
+    {
+      "name": "Blood Bat",
+      "stats": {
+        "Move": 8,
+        "Fight": 1,
+        "Shoot": 0,
+        "Armour": 12,
+        "Will": 3,
+        "Health": 1
+      },
+      "xp": 1,
+      "traits": [
+        "Animal",
+        "Flying"
+      ]
+    },
+    {
+      "name": "Burrow Worm",
+      "stats": {
+        "Move": 5,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 3,
+        "Health": 14
+      },
+      "xp": 8,
+      "traits": [
+        "Animal",
+        "Burrowing"
+      ]
+    },
+    {
+      "name": "Civilian",
+      "stats": {
+        "Move": 6,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 0,
+        "Health": 10
+      },
+      "xp": 0,
+      "traits": [
+        "Human",
+        "Dagger"
+      ]
+    },
+    {
+      "name": "Darkroot Body",
+      "stats": {
+        "Move": 0,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 14,
+        "Will": 0,
+        "Health": 18
+      },
+      "xp": 6,
+      "traits": [
+        "Plant",
+        "Immobile",
+        "Missile Cap"
+      ]
+    },
+    {
+      "name": "Darkroot Vine",
+      "stats": {
+        "Move": 6,
+        "Fight": 1,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 0,
+        "Health": 6
+      },
+      "xp": 0,
+      "traits": [
+        "Plant"
+      ]
+    },
+    {
+      "name": "Flesh Golem",
+      "stats": {
+        "Move": 5,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 0,
+        "Health": 16
+      },
+      "xp": 5,
+      "traits": [
+        "Undead",
+        "Horrific (TN8)"
+      ]
+    },
+    {
+      "name": "Giant Fly",
+      "stats": {
+        "Move": 6,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 6,
+        "Will": 0,
+        "Health": 5
+      },
+      "xp": 2,
+      "traits": [
+        "Animal",
+        "Flying",
+        "Disease (TN8)"
+      ]
+    },
+    {
+      "name": "Giant Rat",
+      "stats": {
+        "Move": 6,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 6,
+        "Will": 0,
+        "Health": 1
+      },
+      "xp": 2,
+      "traits": [
+        "Animal",
+        "Disease (TN8)"
+      ]
+    },
+    {
+      "name": "Giant Snake",
+      "stats": {
+        "Move": 5,
+        "Fight": 2,
+        "Shoot": 0,
+        "Armour": 8,
+        "Will": 0,
+        "Health": 10
+      },
+      "xp": 3,
+      "traits": [
+        "Animal",
+        "Amphibious/Poison"
+      ]
+    },
+    {
+      "name": "Giant Spider",
+      "stats": {
+        "Move": 6,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 8,
+        "Will": 0,
+        "Health": 4
+      },
+      "xp": 2,
+      "traits": [
+        "Animal",
+        "Poison",
+        "Ignore Rough/Climb"
+      ]
+    },
+    {
+      "name": "Ghoul",
+      "stats": {
+        "Move": 6,
+        "Fight": 2,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 2,
+        "Health": 10
+      },
+      "xp": 3,
+      "traits": [
+        "Undead"
+      ]
+    },
+    {
+      "name": "Ghoul Fiend",
+      "stats": {
+        "Move": 6,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 11,
+        "Will": 6,
+        "Health": 14
+      },
+      "xp": 4,
+      "traits": [
+        "Undead"
+      ]
+    },
+    {
+      "name": "Ghoul Flinger",
+      "stats": {
+        "Move": 6,
+        "Fight": 1,
+        "Shoot": 1,
+        "Armour": 10,
+        "Will": 2,
+        "Health": 10
+      },
+      "xp": 3,
+      "traits": [
+        "Undead",
+        "Throw Bones 10in"
+      ]
+    },
+    {
+      "name": "Ghoul Rotter",
+      "stats": {
+        "Move": 6,
+        "Fight": 1,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 0,
+        "Health": 8
+      },
+      "xp": 2,
+      "traits": [
+        "Undead",
+        "Disease (TN14)"
+      ]
+    },
+    {
+      "name": "Ghoul Snake",
+      "stats": {
+        "Move": 5,
+        "Fight": 2,
+        "Shoot": 0,
+        "Armour": 8,
+        "Will": 0,
+        "Health": 16
+      },
+      "xp": 3,
+      "traits": [
+        "Undead"
+      ]
+    },
+    {
+      "name": "Gnoll Fighter",
+      "stats": {
+        "Move": 6,
+        "Fight": 2,
+        "Shoot": 0,
+        "Armour": 11,
+        "Will": 0,
+        "Health": 10
+      },
+      "xp": 3,
+      "traits": [
+        "Humanoid",
+        "Hand Weapon",
+        "Light Armour"
+      ]
+    },
+    {
+      "name": "Gnoll Archer",
+      "stats": {
+        "Move": 6,
+        "Fight": 1,
+        "Shoot": 2,
+        "Armour": 11,
+        "Will": 0,
+        "Health": 10
+      },
+      "xp": 3,
+      "traits": [
+        "Humanoid",
+        "Bow/Crossbow",
+        "Light Armour"
+      ]
+    },
+    {
+      "name": "Gnoll Sergeant",
+      "stats": {
+        "Move": 6,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 11,
+        "Will": 0,
+        "Health": 12
+      },
+      "xp": 3,
+      "traits": [
+        "Humanoid",
+        "Two-Handed Weapon",
+        "Light Armour"
+      ]
+    },
+    {
+      "name": "Gnoll Shaman",
+      "stats": {
+        "Move": 6,
+        "Fight": 1,
+        "Shoot": 0,
+        "Armour": 11,
+        "Will": 5,
+        "Health": 12
+      },
+      "xp": 5,
+      "traits": [
+        "Humanoid",
+        "Poison",
+        "Inspiring +2 Will 6in"
+      ]
+    },
+    {
+      "name": "Ogre",
+      "stats": {
+        "Move": 6,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 12,
+        "Will": 0,
+        "Health": 14
+      },
+      "xp": 5,
+      "traits": [
+        "Large",
+        "Two-Handed Weapon"
+      ]
+    },
+    {
+      "name": "Shadow Knight",
+      "stats": {
+        "Move": 6,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 12,
+        "Will": 0,
+        "Health": 14
+      },
+      "xp": 10,
+      "traits": [
+        "Undead",
+        "Halve Non-Magic Damage"
+      ]
+    },
+    {
+      "name": "Skeleton",
+      "stats": {
+        "Move": 6,
+        "Fight": 1,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 0,
+        "Health": 1
+      },
+      "xp": 1,
+      "traits": [
+        "Undead"
+      ]
+    },
+    {
+      "name": "Skeletal Knight",
+      "stats": {
+        "Move": 6,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 13,
+        "Will": 0,
+        "Health": 1
+      },
+      "xp": 2,
+      "traits": [
+        "Undead"
+      ]
+    },
+    {
+      "name": "Swamp Zombie",
+      "stats": {
+        "Move": 4,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 12,
+        "Will": 0,
+        "Health": 6
+      },
+      "xp": 2,
+      "traits": [
+        "Undead",
+        "Amphibious"
+      ]
+    },
+    {
+      "name": "Terror Wing",
+      "stats": {
+        "Move": 6,
+        "Fight": 5,
+        "Shoot": 0,
+        "Armour": 14,
+        "Will": 8,
+        "Health": 16
+      },
+      "xp": 20,
+      "traits": [
+        "Horrific (TN12)",
+        "Flying",
+        "Spellcaster"
+      ]
+    },
+    {
+      "name": "Tortured Soul",
+      "stats": {
+        "Move": 6,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 99,
+        "Will": 0,
+        "Health": 1
+      },
+      "xp": 10,
+      "traits": [
+        "Undead",
+        "Will Sap -2",
+        "Invulnerable"
+      ]
+    },
+    {
+      "name": "Troll",
+      "stats": {
+        "Move": 4,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 14,
+        "Will": 2,
+        "Health": 16
+      },
+      "xp": 8,
+      "traits": [
+        "Large",
+        "Two-Handed Weapon",
+        "Potentially Two-Headed"
+      ]
+    },
+    {
+      "name": "Vulture",
+      "stats": {
+        "Move": 6,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 14,
+        "Will": 0,
+        "Health": 4
+      },
+      "xp": 3,
+      "traits": [
+        "Animal",
+        "Flying"
+      ]
+    },
+    {
+      "name": "Wolf",
+      "stats": {
+        "Move": 8,
+        "Fight": 1,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 0,
+        "Health": 6
+      },
+      "xp": 2,
+      "traits": [
+        "Animal"
+      ]
+    },
+    {
+      "name": "Zombie",
+      "stats": {
+        "Move": 4,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 12,
+        "Will": 0,
+        "Health": 6
+      },
+      "xp": 2,
+      "traits": [
+        "Undead"
+      ]
+    }
+  ],
+  "companions_roster": [
+    {
+      "name": "Arcanist",
+      "rp": 15,
+      "stats": {
+        "Move": 6,
+        "Fight": 2,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 2,
+        "Health": 10
+      },
+      "skills": {
+        "Ancient Lore": 5,
+        "Read Runes": 5
+      },
+      "equipment": [
+        "Hand Weapon"
+      ]
+    },
+    {
+      "name": "Archer",
+      "rp": 20,
+      "stats": {
+        "Move": 6,
+        "Fight": 2,
+        "Shoot": 2,
+        "Armour": 11,
+        "Will": 1,
+        "Health": 10
+      },
+      "equipment": [
+        "Bow OR Crossbow",
+        "Dagger",
+        "Light Armour",
+        "Quiver"
+      ]
+    },
+    {
+      "name": "Barbarian",
+      "rp": 35,
+      "stats": {
+        "Move": 6,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 11,
+        "Will": 3,
+        "Health": 14
+      },
+      "skills": {
+        "Strength": 5
+      },
+      "equipment": [
+        "Hand Weapon",
+        "Shield"
+      ]
+    },
+    {
+      "name": "Conjuror",
+      "rp": 20,
+      "stats": {
+        "Move": 6,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 3,
+        "Health": 12
+      },
+      "equipment": [
+        "Staff OR Hand Weapon"
+      ],
+      "notes": "Knows 2 spells (or 3 spells for +10 RP)."
+    },
+    {
+      "name": "Guardsman",
+      "rp": 20,
+      "stats": {
+        "Move": 6,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 11,
+        "Will": 2,
+        "Health": 12
+      },
+      "equipment": [
+        "Two-Handed Weapon",
+        "Light Armour"
+      ]
+    },
+    {
+      "name": "Hound",
+      "rp": 5,
+      "stats": {
+        "Move": 8,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": -2,
+        "Health": 6
+      },
+      "traits": [
+        "Animal",
+        "Cannot Carry Items",
+        "Limited Skill Rolls"
+      ]
+    },
+    {
+      "name": "Warhound",
+      "rp": 10,
+      "stats": {
+        "Move": 8,
+        "Fight": 1,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": -2,
+        "Health": 8
+      },
+      "traits": [
+        "Animal",
+        "Cannot Carry Items",
+        "Limited Skill Rolls"
+      ]
+    },
+    {
+      "name": "Bloodhound",
+      "rp": 10,
+      "stats": {
+        "Move": 8,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": -2,
+        "Health": 6
+      },
+      "skills": {
+        "Tracking": 5
+      },
+      "traits": [
+        "Animal",
+        "Cannot Carry Items",
+        "Limited Skill Rolls"
+      ],
+      "notes": "+2 bonus to Ranger Tracking within 2 inches."
+    },
+    {
+      "name": "Knight",
+      "rp": 35,
+      "stats": {
+        "Move": 5,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 13,
+        "Will": 2,
+        "Health": 12
+      },
+      "skills": {
+        "Strength": 4
+      },
+      "equipment": [
+        "Hand Weapon",
+        "Shield",
+        "Heavy Armour"
+      ]
+    },
+    {
+      "name": "Man-at-Arms",
+      "rp": 20,
+      "stats": {
+        "Move": 6,
+        "Fight": 3,
+        "Shoot": 0,
+        "Armour": 12,
+        "Will": 2,
+        "Health": 12
+      },
+      "equipment": [
+        "Hand Weapon",
+        "Shield",
+        "Light Armour"
+      ]
+    },
+    {
+      "name": "Raptor",
+      "rp": 10,
+      "stats": {
+        "Move": 9,
+        "Fight": 0,
+        "Shoot": 0,
+        "Armour": 14,
+        "Will": 3,
+        "Health": 1
+      },
+      "skills": {
+        "Perception": 4
+      },
+      "traits": [
+        "Animal",
+        "Cannot Carry Items",
+        "Auto Pass Climb/Swim",
+        "Limited Skill Rolls"
+      ]
+    },
+    {
+      "name": "Recruit",
+      "rp": 10,
+      "stats": {
+        "Move": 6,
+        "Fight": 2,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 0,
+        "Health": 10
+      },
+      "equipment": [
+        "Hand Weapon"
+      ]
+    },
+    {
+      "name": "Rogue",
+      "rp": 20,
+      "stats": {
+        "Move": 7,
+        "Fight": 1,
+        "Shoot": 1,
+        "Armour": 10,
+        "Will": 1,
+        "Health": 10
+      },
+      "skills": {
+        "Climb": 2,
+        "Perception": 2,
+        "Pick Lock": 5,
+        "Traps": 5,
+        "Stealth": 5
+      },
+      "equipment": [
+        "Dagger",
+        "Throwing Knife"
+      ]
+    },
+    {
+      "name": "Savage",
+      "rp": 35,
+      "stats": {
+        "Move": 6,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 10,
+        "Will": 3,
+        "Health": 14
+      },
+      "skills": {
+        "Strength": 5
+      },
+      "equipment": [
+        "Two-Handed Weapon"
+      ]
+    },
+    {
+      "name": "Swordsman",
+      "rp": 25,
+      "stats": {
+        "Move": 6,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 11,
+        "Will": 2,
+        "Health": 12
+      },
+      "equipment": [
+        "Hand Weapon",
+        "Dagger",
+        "Light Armour"
+      ]
+    },
+    {
+      "name": "Templar",
+      "rp": 35,
+      "stats": {
+        "Move": 5,
+        "Fight": 4,
+        "Shoot": 0,
+        "Armour": 12,
+        "Will": 2,
+        "Health": 12
+      },
+      "skills": {
+        "Strength": 4
+      },
+      "equipment": [
+        "Two-Handed Weapon",
+        "Heavy Armour"
+      ]
+    },
+    {
+      "name": "Tracker",
+      "rp": 30,
+      "stats": {
+        "Move": 7,
+        "Fight": 2,
+        "Shoot": 2,
+        "Armour": 11,
+        "Will": 2,
+        "Health": 12
+      },
+      "skills": {
+        "Tracking": 5
+      },
+      "equipment": [
+        "Staff",
+        "Bow",
+        "Quiver",
+        "Light Armour"
+      ]
+    }
+  ],
+  "random_tables": {
+    "survival_table": {
+      "dice": "1d20",
+      "ranger_bonus": "+1 after roll",
+      "results": [
+        {
+          "roll_range": [
+            1,
+            2
+          ],
+          "result": "Dead",
+          "description": "Spirit departs. If ranger, mission fails. Companion loses all items."
+        },
+        {
+          "roll_range": [
+            3,
+            4
+          ],
+          "result": "Permanent Injury",
+          "description": "Roll on Permanent Injury Table."
+        },
+        {
+          "roll_range": [
+            5,
+            6
+          ],
+          "result": "Badly Wounded",
+          "description": "Ranger starts next game at -5 Health. Companion starts at -5 Health or sits out."
+        },
+        {
+          "roll_range": [
+            7,
+            8
+          ],
+          "result": "Close Call",
+          "description": "Loses all non-standard equipment, returns with flesh wounds."
+        },
+        {
+          "roll_range": [
+            9,
+            20
+          ],
+          "result": "Full Recovery",
+          "description": "Flesh wounds only, returns for next scenario at full Health."
+        }
+      ]
+    },
+    "permanent_injury_table": {
+      "dice": "1d20",
+      "results": [
+        {
+          "roll_range": [
+            1,
+            2
+          ],
+          "injury": "Lost Toes",
+          "stat_penalty": {
+            "Move": -0.5
+          },
+          "max_times": 2
+        },
+        {
+          "roll_range": [
+            3,
+            5
+          ],
+          "injury": "Smashed Leg",
+          "stat_penalty": {
+            "Move": -1.0
+          },
+          "max_times": 2
+        },
+        {
+          "roll_range": [
+            6,
+            10
+          ],
+          "injury": "Crushed Arm",
+          "stat_penalty": {
+            "Fight": -1
+          },
+          "max_times": 2
+        },
+        {
+          "roll_range": [
+            11,
+            12
+          ],
+          "injury": "Lost Fingers",
+          "stat_penalty": {
+            "Shoot": -1
+          },
+          "max_times": 2
+        },
+        {
+          "roll_range": [
+            13,
+            14
+          ],
+          "injury": "Never Quite as Strong",
+          "stat_penalty": {
+            "Health": -1
+          },
+          "max_times": 2
+        },
+        {
+          "roll_range": [
+            15,
+            16
+          ],
+          "injury": "Psychological Scars",
+          "stat_penalty": {
+            "Will": -1
+          },
+          "max_times": 2
+        },
+        {
+          "roll_range": [
+            17,
+            18
+          ],
+          "injury": "Smashed Jaw",
+          "stat_penalty": {
+            "Leadership": -3,
+            "RangerPhaseActivationCap": 1
+          }
+        },
+        {
+          "roll_range": [
+            19,
+            20
+          ],
+          "injury": "Lost Eye",
+          "stat_penalty": {
+            "Fight": -1,
+            "Shoot": -2
+          }
+        }
+      ]
+    },
+    "treasure_table": {
+      "dice": "1d20",
+      "results": [
+        {
+          "roll_range": [
+            1,
+            6
+          ],
+          "type": "Gold and Jewels",
+          "effect": "+10 XP to ranger OR 1 Progression Point to a companion."
+        },
+        {
+          "roll_range": [
+            7,
+            12
+          ],
+          "type": "Herb or Potion",
+          "sub_table": "herbs_and_potions_table"
+        },
+        {
+          "roll_range": [
+            13,
+            16
+          ],
+          "type": "Weapon or Armour",
+          "sub_table": "weapons_and_armour_table"
+        },
+        {
+          "roll_range": [
+            17,
+            20
+          ],
+          "type": "Magic Item",
+          "sub_table": "magic_item_table"
+        }
+      ]
+    },
+    "herbs_and_potions_table": {
+      "dice": "1d20",
+      "results": [
+        {
+          "roll": 1,
+          "item": "Dremlocke Weed",
+          "effect": "+5 on all Will Rolls for scenario."
+        },
+        {
+          "roll": 2,
+          "item": "Farlight Leaf",
+          "effect": "+1 Shoot, -1 Fight and -1 Will for scenario."
+        },
+        {
+          "roll": 3,
+          "item": "Fireheart Green",
+          "effect": "+1 action on next activation (max 3 actions per activation)."
+        },
+        {
+          "roll": 4,
+          "item": "Fury Leaves",
+          "effect": "+1 damage when winning combat, -2 Will for scenario."
+        },
+        {
+          "roll": 5,
+          "item": "Ironbark Powder",
+          "effect": "+1 Armour, -2 Will for scenario."
+        },
+        {
+          "roll": 6,
+          "item": "Nightnock",
+          "effect": "Cures disease before next scenario."
+        },
+        {
+          "roll": 7,
+          "item": "Quickbeam Root",
+          "effect": "+2 Move, -2 Will for scenario."
+        },
+        {
+          "roll": 8,
+          "item": "Haikwheat",
+          "effect": "+2 temporary Health (can exceed starting max), -1 Will for scenario."
+        },
+        {
+          "roll": 9,
+          "item": "Silverhair",
+          "effect": "Burned: all gnolls suffer -1 Fight for rest of game."
+        },
+        {
+          "roll": 10,
+          "item": "Anthalas",
+          "effect": "+1 bonus on Survival Roll after the scenario for bearer or companion."
+        },
+        {
+          "roll": 11,
+          "item": "Potion of Healing",
+          "effect": "Restores 5 Health, removes poison (cannot exceed starting max)."
+        },
+        {
+          "roll": 12,
+          "item": "Potion of Strength",
+          "effect": "+1 Fight for scenario."
+        },
+        {
+          "roll": 13,
+          "item": "Potion of Toughness",
+          "effect": "+1 Armour for scenario."
+        },
+        {
+          "roll": 14,
+          "item": "Philtre of Fairy Dust",
+          "effect": "Sprinkled over weapon to make it magic for scenario (or one arrow/bolt)."
+        },
+        {
+          "roll": 15,
+          "item": "Explosive Cocktail",
+          "effect": "Throw up to 8 inches: all figures within 2 inches take +3 shooting attack."
+        },
+        {
+          "roll": 16,
+          "item": "Cordial of Spellfire",
+          "effect": "Regain 1 expended spell during scenario."
+        },
+        {
+          "roll": 17,
+          "item": "Potion of Wraithwalk",
+          "effect": "Move through terrain obstacles freely for 1 turn."
+        },
+        {
+          "roll": 18,
+          "item": "Potion of Slow Fall",
+          "effect": "Take no falling damage for 1 turn."
+        },
+        {
+          "roll": 19,
+          "item": "Potion of Heroism",
+          "effect": "Regain 1 expended Heroic Ability during scenario."
+        },
+        {
+          "roll": 20,
+          "item": "Potion of Restoration",
+          "effect": "Full health restore, cures poison, disease, stat reductions, or 1 permanent injury."
+        }
+      ]
+    },
+    "weapons_and_armour_table": {
+      "dice": "1d20",
+      "results": [
+        {
+          "roll": 1,
+          "item": "Hand Weapon, Magic (5)",
+          "effect": "+5 to Fight roll before rolling (5 uses)."
+        },
+        {
+          "roll": 2,
+          "item": "Two-Handed Weapon, Magic (5)",
+          "effect": "+5 to Fight roll before rolling (5 uses)."
+        },
+        {
+          "roll": 3,
+          "item": "Bow, Magic (5)",
+          "effect": "+5 to Shoot roll before rolling (5 uses)."
+        },
+        {
+          "roll": 4,
+          "item": "Crossbow, Magic (5)",
+          "effect": "+5 to Shoot roll before rolling (5 uses)."
+        },
+        {
+          "roll": 5,
+          "item": "Staff, Magic (5)",
+          "effect": "+5 to Fight roll before rolling (5 uses)."
+        },
+        {
+          "roll": 6,
+          "item": "Hand Weapon, Light",
+          "effect": "Takes 0 item slots."
+        },
+        {
+          "roll": 7,
+          "item": "Two-Handed Weapon, Light",
+          "effect": "Takes 0 item slots."
+        },
+        {
+          "roll": 8,
+          "item": "Dagger, Light",
+          "effect": "Takes 0 item slots."
+        },
+        {
+          "roll": 9,
+          "item": "Throwing Knife, Light",
+          "effect": "Takes 0 item slots."
+        },
+        {
+          "roll": 10,
+          "item": "Shield, Brightness (5)",
+          "effect": "Shooting attacks against bearer are at -5 (5 uses)."
+        },
+        {
+          "roll": 11,
+          "item": "Light Armour, Brightness (5)",
+          "effect": "Shooting attacks against bearer are at -5 (5 uses)."
+        },
+        {
+          "roll": 12,
+          "item": "Heavy Armour, Brightness (5)",
+          "effect": "Shooting attacks against bearer are at -5 (5 uses)."
+        },
+        {
+          "roll": 13,
+          "item": "Hand Weapon, Elemental Strike (3)",
+          "effect": "+5 elemental magic damage on hit (3 uses)."
+        },
+        {
+          "roll": 14,
+          "item": "Two-Handed Weapon, Elemental Strike (3)",
+          "effect": "+5 elemental magic damage on hit (3 uses)."
+        },
+        {
+          "roll": 15,
+          "item": "Staff, Elemental Strike (3)",
+          "effect": "+5 elemental magic damage on hit (3 uses)."
+        },
+        {
+          "roll": 16,
+          "item": "Shield, Blocking (1)",
+          "effect": "Negates damage from one lost hand-to-hand fight (1 use)."
+        },
+        {
+          "roll": 17,
+          "item": "Light Armour, Blocking (1)",
+          "effect": "Negates damage from one lost hand-to-hand fight (1 use)."
+        },
+        {
+          "roll": 18,
+          "item": "Heavy Armour, Blocking (1)",
+          "effect": "Negates damage from one lost hand-to-hand fight (1 use)."
+        },
+        {
+          "roll": 19,
+          "item": "Hand Weapon, Blocking (1)",
+          "effect": "Negates damage from one lost hand-to-hand fight (1 use)."
+        },
+        {
+          "roll": 20,
+          "item": "Two-Handed Weapon, Blocking (1)",
+          "effect": "Negates damage from one lost hand-to-hand fight (1 use)."
+        }
+      ]
+    },
+    "magic_item_table": {
+      "dice": "1d20",
+      "results": [
+        {
+          "roll": 1,
+          "item": "Gemstone of Spellfire (1)",
+          "effect": "Cast 1 spell without expending it."
+        },
+        {
+          "roll": 2,
+          "item": "Sunfire Pendant (3)",
+          "effect": "Free action: Attacks against undead count as magic, undead suffer -2 Fight & -2 Armour for rest of game."
+        },
+        {
+          "roll": 3,
+          "item": "Herb Pouch",
+          "effect": "Takes 1 item slot, holds 2 herbs."
+        },
+        {
+          "roll": 4,
+          "item": "Book of Lore",
+          "effect": "+2 to all Ancient Lore and Read Runes rolls."
+        },
+        {
+          "roll": 5,
+          "item": "Boots of Soft Tread",
+          "effect": "Ignore rough ground penalties for 1 turn."
+        },
+        {
+          "roll": 6,
+          "item": "Cloak of Invisibility",
+          "effect": "Invisible for 1 turn; monsters ignore figure; +8 Stealth."
+        },
+        {
+          "roll": 7,
+          "item": "Eagle-Eye Brooch",
+          "effect": "+2 to all Perception Skill Rolls."
+        },
+        {
+          "roll": 8,
+          "item": "Enchanted Lockpicks",
+          "effect": "+5 to any Pick Lock Skill Roll."
+        },
+        {
+          "roll": 9,
+          "item": "Fate Stone",
+          "effect": "Re-roll any 1 die roll."
+        },
+        {
+          "roll": 10,
+          "item": "Fireball Orb",
+          "effect": "Throw up to 10 inches: +5 elemental magic shooting attack to all figures within 2 inches."
+        },
+        {
+          "roll": 11,
+          "item": "Fishglass",
+          "effect": "Automatically pass all Swimming Rolls for rest of game."
+        },
+        {
+          "roll": 12,
+          "item": "Gauntlets of Strength",
+          "effect": "+5 to any Strength Roll."
+        },
+        {
+          "roll": 13,
+          "item": "Gemstone of Heartlight",
+          "effect": "Gain 1 extra action on activation (max 3 actions)."
+        },
+        {
+          "roll": 14,
+          "item": "Gloves of Climbing",
+          "effect": "+5 to any Climb Roll."
+        },
+        {
+          "roll": 15,
+          "item": "Greyleaf Cloak",
+          "effect": "+2 to all Stealth Rolls."
+        },
+        {
+          "roll": 16,
+          "item": "Ring of Teleportation",
+          "effect": "Spend action: move 10 inches in any direction within line of sight."
+        },
+        {
+          "roll": 17,
+          "item": "Spell Ring",
+          "effect": "Contains 1 chosen spell, spend action to cast, then destroyed."
+        },
+        {
+          "roll": 18,
+          "item": "Spell-Shield Pendant",
+          "effect": "Discard to cancel a hostile spell targeting bearer."
+        },
+        {
+          "roll": 19,
+          "item": "Tool Kit",
+          "effect": "+2 to all Armoury and Traps Skill Rolls."
+        },
+        {
+          "roll": 20,
+          "item": "Rope of Entanglement",
+          "effect": "Target evil figure within 8 inches must pass Move Roll (TN14) or be bound and immobilized."
+        }
+      ]
+    },
+    "shadow_deep_cards_deck": [
+      {
+        "card": "Clubs Ace",
+        "effect": "Horrific howl: All heroes make Will Roll (TN10) or max 1 action next activation."
+      },
+      {
+        "card": "Clubs 2",
+        "effect": "Spawn 1 Vulture at centre of random table edge."
+      },
+      {
+        "card": "Clubs 3",
+        "effect": "All evil creatures gain +1 Fight for next turn."
+      },
+      {
+        "card": "Clubs 4",
+        "effect": "Cloaking mist: Max line of sight 12 inches for rest of scenario."
+      },
+      {
+        "card": "Clubs 5",
+        "effect": "Spawn 1 Giant Spider in random corner."
+      },
+      {
+        "card": "Clubs 6",
+        "effect": "Spawn 1 Giant Spider in random corner."
+      },
+      {
+        "card": "Clubs 7",
+        "effect": "Spawn 1 Ghoul in random corner."
+      },
+      {
+        "card": "Clubs 8",
+        "effect": "Spawn 1 Wolf at centre of random table edge."
+      },
+      {
+        "card": "Clubs 9",
+        "effect": "Ash cloud: For next 2 turns, Will Roll (TN12) before activation or max 1 action, max LOS 8 inches."
+      },
+      {
+        "card": "Clubs 10",
+        "effect": "Spawn 1 Wolf at centre of random table edge."
+      },
+      {
+        "card": "Spades Ace",
+        "effect": "Swarm of stinging insects: All heroes make Health Roll (TN14) or suffer Disease."
+      },
+      {
+        "card": "Spades 2",
+        "effect": "Spawn 2 Gnoll Fighters at centre of random table edge."
+      },
+      {
+        "card": "Spades 3",
+        "effect": "Lightning bolt: Random hero suffers +5 elemental magic shooting attack."
+      },
+      {
+        "card": "Spades 4",
+        "effect": "Spawn 2 Gnoll Archers at centre of random table edge."
+      },
+      {
+        "card": "Spades 5",
+        "effect": "Spawn 1 Gnoll Fighter, 1 Gnoll Archer, 1 Gnoll Sergeant at centre of random table edge."
+      },
+      {
+        "card": "Spades 6",
+        "effect": "Spawn 1 Shadow Knight at centre of random table edge (triggers Note 435 upon entering combat)."
+      }
+    ]
+  },
+  "missions": [
+    {
+      "mission_id": "M01",
+      "title": "Mission 1: The Missing",
+      "recommended_level": "1+",
+      "narrative_briefing": "It has been less than a week since the destruction of Lorenthia and the appearance of the Shadow Deep. Reports of strange creatures and evil robed men flood the border. Veteran ranger Aventine went to investigate an attack on a nearby village and has not returned. You lead a team on an eight-hour trek over difficult terrain.",
+      "required_miniatures": [
+        {
+          "type": "Zombie",
+          "min_quantity": 6
+        },
+        {
+          "type": "Giant Rat",
+          "min_quantity": 3
+        },
+        {
+          "type": "Giant Spider",
+          "min_quantity": 6
+        },
+        {
+          "type": "Survivor",
+          "min_quantity": 3
+        }
+      ],
+      "scenarios": [
+        {
+          "scenario_index": 1,
+          "title": "Scenario 1: The Deserted Village",
+          "narrative_intro": "You arrive at the silent village where bodies lie in the dirt. As you reach the center to search for Aventine, a horrible moaning arises.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 3.0,
+              "length_feet": 3.0
+            },
+            "hero_deployment": {
+              "type": "radius_from_point",
+              "center": "table_center",
+              "max_distance_inches": 3.0
+            },
+            "terrain": [
+              {
+                "type": "small_building",
+                "quantity": "4-5",
+                "layout": "circle_around_center",
+                "min_distance_to_heroes_inches": 6.0
+              },
+              {
+                "type": "scattered_trees_rocks_stream",
+                "density": "medium"
+              }
+            ],
+            "markers": [
+              {
+                "type": "clue_marker",
+                "id_range": [
+                  1,
+                  2
+                ],
+                "placement": "inside_random_building",
+                "locked_doors": true
+              },
+              {
+                "type": "clue_marker",
+                "id_range": [
+                  3,
+                  6
+                ],
+                "placement": "distance_from_center_toward_corners",
+                "distance_inches": 14.0
+              }
+            ],
+            "initial_enemies": [
+              {
+                "type": "Giant Rat",
+                "quantity": 2,
+                "placement": "adjacent_to_random_building"
+              },
+              {
+                "type": "Zombie",
+                "quantity": 4,
+                "placement": "table_edge_center_offset",
+                "distance_from_edge_inches": 6.0,
+                "edges": [
+                  "north",
+                  "south",
+                  "east",
+                  "west"
+                ]
+              }
+            ]
+          },
+          "pre_scenario_checks": [
+            {
+              "skill": "Perception",
+              "tn": 8,
+              "eligible_figures": "any_single_hero",
+              "on_success": {
+                "action": "move_marker",
+                "marker_type": "clue_marker_not_in_house",
+                "distance_inches": 6.0,
+                "direction": "toward_testing_figure"
+              }
+            }
+          ],
+          "mechanics": {
+            "target_point": "nearest_clue_marker_in_house_else_nearest_clue_marker",
+            "doors": {
+              "buildings_with_clues": {
+                "locked": true,
+                "open_actions": [
+                  {
+                    "type": "skill_roll",
+                    "skill": "Pick Lock",
+                    "tn": 8,
+                    "cost_actions": 1
+                  },
+                  {
+                    "type": "stat_roll",
+                    "stat": "Strength",
+                    "tn": 8,
+                    "cost_actions": 1
+                  }
+                ]
+              }
+            },
+            "clue_interaction": {
+              "trigger": "base_contact",
+              "cost_action": "ends_action_immediately",
+              "consume_marker": true,
+              "unique_results_only": true
+            }
+          },
+          "interaction_tables": {
+            "clue_marker_table": [
+              {
+                "roll_range": [
+                  1,
+                  3
+                ],
+                "result_id": "aventine_body",
+                "description": "Body of Aventine discovered.",
+                "test": {
+                  "skill": "Armoury",
+                  "tn": 6
+                },
+                "reward_on_success": {
+                  "item": "Magic Sword (+1 Fight)",
+                  "duration": "usable_current_and_next_scenario_then_returned"
+                }
+              },
+              {
+                "roll_range": [
+                  4,
+                  6
+                ],
+                "result_id": "survivor_found",
+                "description": "Badly wounded living villager found.",
+                "spawn_companion": {
+                  "type": "Survivor",
+                  "stats": {
+                    "Move": 3,
+                    "Fight": 0,
+                    "Armour": 10,
+                    "Health": 5
+                  }
+                }
+              },
+              {
+                "roll_range": [
+                  7,
+                  9
+                ],
+                "result_id": "strange_tracks",
+                "description": "Odd tracks found.",
+                "test": {
+                  "skill": "Track",
+                  "tn": 6
+                }
+              },
+              {
+                "roll_range": [
+                  10,
+                  12
+                ],
+                "result_id": "mutilated_body",
+                "description": "Poisonous bite marks found on corpse.",
+                "test": {
+                  "skill": "Survival",
+                  "tn": 6
+                }
+              },
+              {
+                "roll_range": [
+                  13,
+                  15
+                ],
+                "result_id": "herbs",
+                "description": "Discarded herbs.",
+                "action": "roll_on_herbs_and_potions_table"
+              },
+              {
+                "roll_range": [
+                  16,
+                  18
+                ],
+                "result_id": "treasure",
+                "description": "Marker becomes a treasure token.",
+                "converts_to": "treasure_token"
+              },
+              {
+                "roll_range": [
+                  19,
+                  20
+                ],
+                "result_id": "zombie_ambush",
+                "description": "Replace marker with a zombie in combat with triggering figure.",
+                "spawn_enemy_in_combat": {
+                  "type": "Zombie"
+                }
+              }
+            ]
+          },
+          "event_deck": {
+            "draw_phase": "Event Phase",
+            "draw_frequency": "every_turn",
+            "cards": [
+              {
+                "card": "Red Ace",
+                "effect": "Spawn 4 Zombies in the starting four edge positions."
+              },
+              {
+                "card": "Red 2",
+                "effect": "Spawn 2 Zombies at centre points of two random table edges."
+              },
+              {
+                "card": "Red 3",
+                "effect": "Spawn 2 Zombies at centre points of two random table edges."
+              },
+              {
+                "card": "Red 4",
+                "effect": "Spawn 1 Zombie adjacent to one randomly determined clue marker."
+              },
+              {
+                "card": "Red 5",
+                "effect": "Spawn 1 Giant Rat in contact with a building as close as possible to a hero."
+              },
+              {
+                "card": "Red 6",
+                "effect": "Spawn 1 Giant Rat in contact with a building as close as possible to a hero."
+              },
+              {
+                "card": "Red 7",
+                "effect": "Sudden screech: All heroes must make Will Roll (TN8) or suffer -1 Fight for rest of turn."
+              },
+              {
+                "card": "Red 8",
+                "effect": "Hero with lowest Will must make Will Roll (TN10) or lose next activation."
+              },
+              {
+                "card": "Red 9",
+                "effect": "Any figure reduced to 0 Health must make Health Roll (TN16) or suffer disease in next scenario."
+              },
+              {
+                "card": "Red 10",
+                "effect": "Sudden chill: -1 Move to all figures next turn."
+              }
+            ]
+          },
+          "end_conditions": {
+            "max_turns": 8,
+            "on_turn_limit_reached": "proceed_to_outcome"
+          },
+          "outcome_and_progression": {
+            "healing": "all_surviving_figures_regain_full_health",
+            "next_step": "Scenario 2",
+            "experience_rewards": [
+              {
+                "trigger": "kill_giant_rat_or_zombie",
+                "xp_per_unit": 2
+              },
+              {
+                "trigger": "uncover_clue_marker",
+                "xp_per_unit": 6
+              },
+              {
+                "trigger": "discover_aventine_body",
+                "xp_flat": 12
+              },
+              {
+                "trigger": "recover_aventine_sword",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "survivor_lives_to_scenario_end",
+                "xp_flat": 15
+              },
+              {
+                "trigger": "tracks_nature_determined",
+                "xp_flat": 6
+              },
+              {
+                "trigger": "mutilated_body_bite_marks_determined",
+                "xp_flat": 6
+              }
+            ]
+          }
+        },
+        {
+          "scenario_index": 2,
+          "title": "Scenario 2: The Infected Trees",
+          "narrative_intro": "Clues lead into the woods where giant spiders have set up nests and webs to consume villagers.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "hero_deployment": {
+              "type": "table_edge",
+              "edge": "opposite_nest_trees",
+              "max_distance_inches": 3.0
+            },
+            "terrain": [
+              {
+                "type": "nest_tree",
+                "quantity": 4,
+                "placement": "within_6_inches_of_one_edge",
+                "min_separation_inches": 6.0
+              },
+              {
+                "type": "dense_briar_patches_and_trees",
+                "density": "medium"
+              }
+            ],
+            "markers": [
+              {
+                "type": "web_cocoon",
+                "quantity": 5,
+                "placement_rules": [
+                  {
+                    "index": 1,
+                    "location": "table_center"
+                  },
+                  {
+                    "index_range": [
+                      2,
+                      5
+                    ],
+                    "distance_from_center_inches": 8.0,
+                    "min_separation_inches": 4.0
+                  }
+                ]
+              }
+            ],
+            "initial_enemies": [
+              {
+                "type": "Giant Spider",
+                "quantity": 3,
+                "placement": "adjacent_to_random_nest_trees"
+              },
+              {
+                "type": "Giant Spider",
+                "quantity": 2,
+                "placement": "adjacent_to_random_web_cocoons"
+              }
+            ]
+          },
+          "pre_scenario_checks": [
+            {
+              "skill": "Track",
+              "tn": 12,
+              "eligible_figures": "any_single_hero",
+              "on_success": {
+                "action": "remove_enemy",
+                "enemy_type": "Giant Spider",
+                "quantity": 1
+              }
+            },
+            {
+              "skill": "Survival",
+              "tn": 10,
+              "eligible_figures": "any_single_hero",
+              "on_success": {
+                "action": "bonus_torch_to_figure"
+              }
+            }
+          ],
+          "mechanics": {
+            "target_point": null,
+            "burning_nest_trees": {
+              "action_cost": 1,
+              "requires_torch": true,
+              "effect": "tree_destroyed"
+            },
+            "cocoon_interaction": {
+              "trigger": "base_contact_and_action",
+              "consume_marker": true
+            }
+          },
+          "interaction_tables": {
+            "web_cocoon_table": [
+              {
+                "roll_range": [
+                  1,
+                  8
+                ],
+                "result_id": "dead_body",
+                "description": "Dead villager."
+              },
+              {
+                "roll_range": [
+                  9,
+                  13
+                ],
+                "result_id": "survivor_found",
+                "description": "Badly wounded living villager.",
+                "spawn_companion": {
+                  "type": "Survivor",
+                  "stats": {
+                    "Move": 3,
+                    "Fight": 0,
+                    "Armour": 10,
+                    "Health": 5
+                  }
+                }
+              },
+              {
+                "roll_range": [
+                  14,
+                  20
+                ],
+                "result_id": "zombie_spawn",
+                "description": "Spawn zombie within 2 inches of searcher.",
+                "spawn_enemy_near": {
+                  "type": "Zombie",
+                  "distance_inches": 2.0
+                }
+              }
+            ]
+          },
+          "event_deck": {
+            "draw_phase": "Event Phase",
+            "draw_frequency": "odd_numbered_turns",
+            "cards": [
+              {
+                "card": "Red Ace",
+                "effect": "Spawn 1 Giant Spider adjacent to a random nest tree (or edge if none remain)."
+              },
+              {
+                "card": "Red 2",
+                "effect": "Spawn 1 Giant Spider adjacent to a random nest tree (or edge if none remain)."
+              },
+              {
+                "card": "Red 3",
+                "effect": "Web trap: Random hero entangled; Strength Roll (TN12) at start of turn to escape."
+              },
+              {
+                "card": "Red 4",
+                "effect": "Web trap: Random hero entangled; Strength Roll (TN12) at start of turn to escape."
+              },
+              {
+                "card": "Red 5",
+                "effect": "Spawn 1 Nest Tree 12 inches from table center in random direction, with 1 Giant Spider and 1 Treasure Token."
+              },
+              {
+                "card": "Red 6",
+                "effect": "Ray of Light: Sunlight moves any 1 Giant Spider 6 inches in player-chosen direction."
+              }
+            ]
+          },
+          "end_conditions": {
+            "max_turns": 10,
+            "on_turn_limit_reached": "mission_complete"
+          },
+          "outcome_and_progression": {
+            "mission_status": "complete",
+            "experience_rewards": [
+              {
+                "trigger": "kill_giant_spider_or_zombie",
+                "xp_per_unit": 2
+              },
+              {
+                "trigger": "search_web_cocoon",
+                "xp_per_unit": 4
+              },
+              {
+                "trigger": "burn_nest_tree",
+                "xp_per_unit": 5
+              },
+              {
+                "trigger": "no_nest_trees_remaining_at_end",
+                "xp_flat": 8
+              },
+              {
+                "trigger": "survivor_lives_to_scenario_end",
+                "xp_per_unit": 10
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mission_id": "M02",
+      "title": "Mission 2: The Beacon Tower",
+      "recommended_level": "2+",
+      "narrative_briefing": "Contact has been lost with the beacon tower of Tor Varden along the border with Lorenthia. Presumed overrun, you are commanded to proceed with all swiftness, ascertain the truth, learn what enemy forces occupy it, and eliminate or harass them.",
+      "required_miniatures": [
+        {
+          "type": "Gnoll Fighter",
+          "min_quantity": 4
+        },
+        {
+          "type": "Gnoll Archer",
+          "min_quantity": 4
+        },
+        {
+          "type": "Gnoll Sergeant",
+          "min_quantity": 2
+        },
+        {
+          "type": "Gnoll Shaman",
+          "min_quantity": 1
+        },
+        {
+          "type": "Flesh Golem",
+          "min_quantity": 1
+        },
+        {
+          "type": "Shadow Knight",
+          "min_quantity": 1
+        },
+        {
+          "type": "Vulture",
+          "min_quantity": 1
+        },
+        {
+          "type": "Man-at-Arms",
+          "min_quantity": 1
+        }
+      ],
+      "scenarios": [
+        {
+          "scenario_index": 1,
+          "title": "Scenario 1: The Bridge Guards",
+          "narrative_intro": "You reach the cold and swift Enthel River. A contingent of gnolls guards the bridge and patrols the banks.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": [
+              {
+                "type": "river",
+                "name": "Enthel River",
+                "placement": "parallel to edge, 6 inches in, shock cold / deep water"
+              },
+              {
+                "type": "stone_bridge",
+                "placement": "table center across river"
+              },
+              {
+                "type": "ford",
+                "placement": "3 inches from one table edge across river"
+              },
+              {
+                "type": "camp",
+                "placement": "on smaller bank side near bridge",
+                "features": [
+                  "campfire",
+                  "bedrolls"
+                ]
+              },
+              {
+                "type": "rocks_trees_shrubs",
+                "density": "dense_crowded",
+                "line_of_sight_restricted": true
+              }
+            ],
+            "hero_deployment": {
+              "type": "table_edge",
+              "edge": "furthest_from_river",
+              "max_distance_inches": 3.0
+            },
+            "markers": [
+              {
+                "type": "clue_marker",
+                "quantity": 1,
+                "placement": "in_camp"
+              },
+              {
+                "type": "treasure_token",
+                "quantity": 1,
+                "placement": "in_camp"
+              }
+            ],
+            "initial_enemies": [
+              {
+                "type": "Gnoll Fighter",
+                "quantity": 2,
+                "placement": "in_camp"
+              },
+              {
+                "type": "Gnoll Sergeant",
+                "quantity": 1,
+                "placement": "on_bridge"
+              },
+              {
+                "type": "Gnoll Fighter",
+                "quantity": 2,
+                "placement": "on_bridge"
+              },
+              {
+                "type": "Gnoll Archer",
+                "quantity": 4,
+                "placement": "along_river_bank_larger_side",
+                "separation_inches": 8.0
+              }
+            ]
+          },
+          "pre_scenario_checks": [
+            {
+              "skill": "Navigation",
+              "tn": 12,
+              "eligible_figures": "any_single_hero",
+              "on_success": {
+                "action": "move_heroes",
+                "quantity": 3,
+                "max_distance_inches": 6.0
+              }
+            }
+          ],
+          "mechanics": {
+            "stealth_element_of_surprise": {
+              "active": true,
+              "attack_bonus": 4,
+              "start_of_turn_stealth_check": {
+                "skill": "Stealth",
+                "tn": 8,
+                "on_success": "move_one_gnoll_up_to_6_inches"
+              },
+              "alarm_triggers": [
+                "Gnoll activates with hero in line of sight",
+                "Gnoll takes damage within line of sight of another gnoll",
+                "Booby trap springs and causes damage"
+              ],
+              "on_alarm_raised": "Stealth check and +4 attack bonus cease immediately."
+            },
+            "enthel_river": {
+              "deep_water": true,
+              "entry_effect": "ends activation immediately",
+              "swimming_penalty": -3,
+              "ford_exception": "no swim test required at ford"
+            },
+            "target_point": null
+          },
+          "interaction_tables": {
+            "clue_marker_table": [
+              {
+                "roll_range": [
+                  1,
+                  7
+                ],
+                "result_id": "ancient_scroll",
+                "description": "Scroll of orders for gnoll deployment.",
+                "post_scenario_test": {
+                  "skill": "Ancient Lore",
+                  "tn": 8
+                },
+                "reward": "automatically pass Stealth roll in Scenario 2"
+              },
+              {
+                "roll_range": [
+                  8,
+                  14
+                ],
+                "result_id": "keys",
+                "description": "Keys to Tor Varden.",
+                "post_scenario_test": {
+                  "skill": "Armoury",
+                  "tn": 4
+                },
+                "reward": "automatically pass Pick Lock roll in Scenario 2"
+              },
+              {
+                "roll_range": [
+                  15,
+                  20
+                ],
+                "result_id": "book_of_poems",
+                "description": "Poetry book written by Tor Varden guard.",
+                "reward": "+5 XP"
+              }
+            ]
+          },
+          "event_deck": {
+            "draw_phase": "Event Phase",
+            "draw_frequency": "odd_numbered_turns",
+            "cards": [
+              {
+                "card": "Red Ace",
+                "effect": "Soldier: Escaped Tor Varden soldier appears on small bank. Acts as Man-at-Arms companion."
+              },
+              {
+                "card": "Red 2",
+                "effect": "Rain: Heavy rain reduces line of sight to 12 inches and imposes -2 to shooting attacks."
+              },
+              {
+                "card": "Red 3",
+                "effect": "Gnoll: 1 Gnoll Fighter appears at center, moves 8 inches in random direction."
+              },
+              {
+                "card": "Red 4",
+                "effect": "Gnoll: 1 Gnoll Fighter appears at center, moves 8 inches in random direction."
+              },
+              {
+                "card": "Red 5",
+                "effect": "Booby Trap: Random hero makes Traps (TN7) or Perception (TN7). Failure triggers +1 attack (alarm if damaged)."
+              },
+              {
+                "card": "Red 6",
+                "effect": "Vulture: 1 Vulture lands in tree on larger bank. Moves 6 inches toward bridge each turn. If it escapes, penalty in Scenario 2."
+              }
+            ]
+          },
+          "end_conditions": {
+            "max_turns": 10,
+            "on_turn_limit_reached": "proceed_to_scenario_2"
+          },
+          "outcome_and_progression": {
+            "healing": "none_specified_proceed_to_scenario_2",
+            "next_step": "Scenario 2",
+            "experience_rewards": [
+              {
+                "trigger": "kill_gnoll",
+                "xp_per_unit": 3
+              },
+              {
+                "trigger": "kill_vulture",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "uncover_clue_marker",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "escaped_soldier_survives",
+                "xp_flat": 10
+              }
+            ]
+          }
+        },
+        {
+          "scenario_index": 2,
+          "title": "Scenario 2: Tor Varden, The Lower Level",
+          "narrative_intro": "You breach Tor Varden. A muffled scream echoes from deeper inside the tower. Time is of the essence.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 1.5,
+              "length_feet": 4.5
+            },
+            "layout_type": "three_sequential_rooms",
+            "rooms": [
+              {
+                "room_id": "A",
+                "name": "Entrance Room",
+                "dimensions_feet": [
+                  1.5,
+                  1.5
+                ],
+                "doors": [
+                  "Main Entrance",
+                  "Door to Room B"
+                ],
+                "setup": "Contains 1 Gnoll Sergeant in contact with an unarmed captive soldier (Man-at-Arms stats, 7 Health, no shield). Two Gnoll Fighters flanking 3 inches away.",
+                "penalty_rule": "If pre-scenario Stealth or Pick Lock failed (or vulture escaped in Scen 1), replace 2 Gnoll Fighters with Gnoll Sergeants.",
+                "time_limit_turns": 4
+              },
+              {
+                "room_id": "B",
+                "name": "The Armoury",
+                "dimensions_feet": [
+                  1.5,
+                  1.5
+                ],
+                "doors": [
+                  "Door from Room A",
+                  "Door to Room C"
+                ],
+                "setup": "Racks of weapons. 1 Clue marker in each far corner. 1 Gnoll Archer between clue markers, 2 Gnoll Fighters in center.",
+                "penalty_rule": "If Room B not opened by end of Turn 4, replace 2 Gnoll Fighters with Gnoll Sergeants.",
+                "time_limit_turns": 5
+              },
+              {
+                "room_id": "C",
+                "name": "The Shaman's Workshop",
+                "dimensions_feet": [
+                  1.5,
+                  1.5
+                ],
+                "doors": [
+                  "Door from Room B",
+                  "Staircase to Upper Level"
+                ],
+                "setup": "Central table with inanimate Flesh Golem, 1 Gnoll Shaman adjacent. 2 Gnoll Fighters 3 inches from table toward door. Shaman animates Golem after 3 turns if alive.",
+                "penalty_rule": "If Room C not opened in time, Shaman casts spell: entering heroes must pass Will (TN10) or suffer -2 Fight while inside."
+              }
+            ],
+            "hero_deployment": {
+              "type": "door_adjacent",
+              "door": "Main Entrance",
+              "max_figures": 4,
+              "distance_inches": 1.0
+            }
+          },
+          "pre_scenario_checks": [
+            {
+              "skill": "Stealth",
+              "tn": 10,
+              "auto_pass_if": "Found ancient scroll in Scenario 1"
+            },
+            {
+              "skill": "Pick Lock",
+              "tn": 10,
+              "auto_pass_if": "Found keys in Scenario 1"
+            }
+          ],
+          "mechanics": {
+            "room_reveal_fog_of_war": "Rooms B and C are only placed and populated when their connecting doors are opened.",
+            "target_point": null
+          },
+          "interaction_tables": {
+            "clue_marker_table": [
+              {
+                "roll_range": [
+                  1,
+                  3
+                ],
+                "item": "Philtre of Fairy Dust",
+                "quantity": 1
+              },
+              {
+                "roll_range": [
+                  4,
+                  6
+                ],
+                "item": "Fury Leaves",
+                "quantity": 1
+              },
+              {
+                "roll_range": [
+                  7,
+                  9
+                ],
+                "item": "Magic Sword (2 uses)",
+                "test": {
+                  "skill": "Armoury",
+                  "tn": 4
+                }
+              },
+              {
+                "roll_range": [
+                  10,
+                  12
+                ],
+                "item": "Captain's Logbook",
+                "xp_reward": 8
+              },
+              {
+                "roll_range": [
+                  13,
+                  14
+                ],
+                "item": "Hidden Note",
+                "test": {
+                  "skill": "Perception",
+                  "tn": 5
+                },
+                "effect": "First attack damaging Shadow Knight in Scen 3 deals +2 elemental magic damage."
+              },
+              {
+                "roll_range": [
+                  15,
+                  16
+                ],
+                "item": "Beaten Dog",
+                "effect": "Next hound companion gained has permanent +1 Will."
+              },
+              {
+                "roll_range": [
+                  17,
+                  18
+                ],
+                "item": "Book of Astronomy",
+                "effect": "+1 to Navigation Rolls while carried."
+              },
+              {
+                "roll_range": [
+                  19,
+                  20
+                ],
+                "item": "Treasure Token",
+                "converts_to": "treasure_token"
+              }
+            ]
+          },
+          "end_conditions": {
+            "trigger": "all_doors_opened_and_all_evil_creatures_slain",
+            "on_success": "proceed_to_scenario_3"
+          },
+          "outcome_and_progression": {
+            "healing": "all_surviving_figures_heal_8_health_up_to_max",
+            "next_step": "Scenario 3",
+            "experience_rewards": [
+              {
+                "trigger": "kill_gnoll_fighter_archer_sergeant",
+                "xp_per_unit": 3
+              },
+              {
+                "trigger": "kill_gnoll_shaman",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "kill_flesh_golem_or_shaman_before_animation",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "find_captains_logbook",
+                "xp_flat": 8
+              },
+              {
+                "trigger": "rescue_prisoners",
+                "xp_flat": 10,
+                "bonus_guard_companion": "+10 XP and companion gets 1 free Progression Point but misses Scenario 3"
+              }
+            ]
+          }
+        },
+        {
+          "scenario_index": 3,
+          "title": "Scenario 3: Tor Varden, The Upper Level",
+          "narrative_intro": "You burst out onto the windy summit walkway of Tor Varden. The beacon pyre is prepared, a chained prisoner atop it, guarded by the dread Shadow Knight.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": [
+              {
+                "type": "tower_roof_walkway",
+                "outer_boundary": "wooden walkway ring with drop off to ground"
+              },
+              {
+                "type": "central_woodpile_beacon",
+                "placement": "table_center",
+                "features": [
+                  "chained_hostage_cannot_be_unbound"
+                ]
+              },
+              {
+                "type": "trapdoor_stairs",
+                "placement": "walkway_corner"
+              }
+            ],
+            "hero_deployment": {
+              "type": "trapdoor_adjacent",
+              "max_distance_inches": 3.0
+            },
+            "initial_enemies": [
+              {
+                "type": "Shadow Knight",
+                "quantity": 1,
+                "placement": "adjacent_to_woodpile"
+              },
+              {
+                "type": "Gnoll Archer",
+                "quantity": 4,
+                "placement": "four_corners_of_walkway"
+              }
+            ]
+          },
+          "mechanics": {
+            "falling_from_walkway": "Any hero pushed over edge or moving recklessly must make Acrobatics (TN5) or fall to 0 Health. Shadow Knight automatically passes.",
+            "target_point": null,
+            "timed_environmental_events": [
+              {
+                "turn": 2,
+                "phase": "Event Phase",
+                "event": "Tor Dargos lit with green fire: All heroes Will Roll (TN10) or become poisoned."
+              },
+              {
+                "turn": 4,
+                "phase": "Event Phase",
+                "event": "Tor Hammel lit with green fire: All heroes Will Roll (TN12) or suffer -2 Fight for scenario."
+              },
+              {
+                "turn": 5,
+                "after_turn_ai": "Shadow Knight moves to woodpile, spends action to execute hostage, next action lights green fire: all heroes Will Roll (TN12) or take failure difference as damage."
+              }
+            ]
+          },
+          "end_conditions": {
+            "trigger": "all_evil_creatures_slain_or_heroes_eliminated_or_retreated"
+          },
+          "outcome_and_progression": {
+            "mission_status": "complete",
+            "experience_rewards": [
+              {
+                "trigger": "kill_gnoll_archer",
+                "xp_per_unit": 3
+              },
+              {
+                "trigger": "kill_shadow_knight",
+                "xp_flat": 10
+              },
+              {
+                "trigger": "save_chained_hostage",
+                "xp_flat": 10
+              },
+              {
+                "trigger": "prevent_woodpile_ignited",
+                "xp_flat": 10
+              },
+              {
+                "trigger": "witness_tor_dargos_lit",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "witness_tor_hammel_lit",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "retake_tor_varden",
+                "xp_flat": 10
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mission_id": "M03",
+      "title": "Mission 3: Descent into Darkness",
+      "recommended_level": "3+",
+      "narrative_briefing": "Behind Tor Varden, you discover a massive fissure cutting down into the dark clouds of the Shadow Deep. A crude stairway descends into the abyss. Ordered to conduct the first reconnaissance expedition into enemy territory, you lead your band down the stairs.",
+      "required_miniatures": [
+        {
+          "type": "Giant Fly",
+          "min_quantity": 6
+        },
+        {
+          "type": "Swamp Zombie",
+          "min_quantity": 6
+        },
+        {
+          "type": "Gnoll Archer",
+          "min_quantity": 4
+        },
+        {
+          "type": "Gnoll Fighter",
+          "min_quantity": 5
+        },
+        {
+          "type": "Troll",
+          "min_quantity": 2
+        },
+        {
+          "type": "Giant Spider",
+          "min_quantity": 2
+        },
+        {
+          "type": "Burrow Worm",
+          "min_quantity": 1
+        },
+        {
+          "type": "Lorenthian Survivors",
+          "composition": [
+            "1 Man-at-Arms",
+            "2 Archers",
+            "4 Civilians"
+          ]
+        }
+      ],
+      "scenarios": [
+        {
+          "scenario_index": 1,
+          "title": "Scenario 1: The Broken Stairs",
+          "narrative_intro": "Descending the steep, cracked stairs into the choking gloom and ash, giant bloated flies emerge from gaping holes in the fissure walls.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": [
+              {
+                "type": "sloping_stairs_path",
+                "width_inches": "3-4",
+                "placement": "center running top to bottom with slight curves"
+              },
+              {
+                "type": "fly_holes",
+                "quantity": 3,
+                "positions": [
+                  {
+                    "id": 1,
+                    "offset_inches": "6 inches from path, 14 inches down"
+                  },
+                  {
+                    "id": 2,
+                    "offset_inches": "6 inches opposite side, 20 inches down"
+                  },
+                  {
+                    "id": 3,
+                    "offset_inches": "6 inches same side as hole 1, 26 inches down"
+                  }
+                ]
+              },
+              {
+                "type": "steep_rocks_rough_ground",
+                "slope_degrees": 60
+              }
+            ],
+            "hero_deployment": {
+              "type": "table_edge",
+              "edge": "top_of_stairs",
+              "max_distance_inches": 3.0
+            }
+          },
+          "mechanics": {
+            "movement_restriction": "Second move action in activation requires Climb Roll (TN10) or Acrobatics Roll (TN10), failure ends activation.",
+            "combat_loss_falling": "Losing combat forces Climb (TN10) or Acrobatics (TN10) or tumble down slope taking falling damage.",
+            "torch_sealing": "Hero adjacent to fly hole can spend 1 action throwing torch to temporarily seal hole against card spawns.",
+            "target_point": "staircase_exit_bottom_of_table"
+          },
+          "event_deck": {
+            "draw_phase": "Event Phase",
+            "draw_frequency": "every_turn",
+            "cards": [
+              {
+                "card": "Red Ace",
+                "effect": "Spawn 1 Giant Fly on each of the 3 fly holes (unless sealed)."
+              },
+              {
+                "card": "Red 2",
+                "effect": "Spawn 1 Giant Fly on each of the 3 fly holes (unless sealed)."
+              },
+              {
+                "card": "Red 3",
+                "effect": "Spawn 1 Giant Fly on Fly Hole 1."
+              },
+              {
+                "card": "Red 4",
+                "effect": "Spawn 1 Giant Fly on Fly Hole 2."
+              },
+              {
+                "card": "Red 5",
+                "effect": "Spawn 1 Giant Fly on Fly Hole 3."
+              },
+              {
+                "card": "Red 6",
+                "effect": "Spawn 1 Giant Fly on Hole 1 and Hole 2."
+              },
+              {
+                "card": "Red 7",
+                "effect": "Spawn 1 Giant Fly on Hole 1 and Hole 3."
+              },
+              {
+                "card": "Red 8",
+                "effect": "Spawn 1 Giant Fly on Hole 2 and Hole 3."
+              },
+              {
+                "card": "Red 9",
+                "effect": "Spawn 2 Giant Flies on Hole 3."
+              },
+              {
+                "card": "Red 10",
+                "effect": "Corpse: Perception Roll (TN8) spawns corpse 3 inches away. Searching gives roll on Herbs/Potions and recovered Love Letter."
+              },
+              {
+                "card": "Red Jack",
+                "effect": "Landslide: 2 random heroes suffer +2 shooting attack."
+              },
+              {
+                "card": "Red Queen",
+                "effect": "Poison Fog: All heroes make Will Roll (TN10) or lose next activation."
+              }
+            ]
+          },
+          "end_conditions": {
+            "max_turns": 10,
+            "trigger": "heroes_exit_bottom_or_turn_limit"
+          },
+          "outcome_and_progression": {
+            "post_scenario_task": "One survivor makes Navigation Roll (TN8) to map stairs.",
+            "next_step": "Scenario 2",
+            "healing": "all_figures_start_next_scenario_at_full_health",
+            "experience_rewards": [
+              {
+                "trigger": "kill_giant_fly",
+                "xp_per_unit": 2
+              },
+              {
+                "trigger": "seal_fly_hole",
+                "xp_per_unit": 5
+              },
+              {
+                "trigger": "hero_exits_bottom_of_table",
+                "xp_per_unit": 2
+              },
+              {
+                "trigger": "map_stairs_successfully",
+                "xp_flat": 8
+              },
+              {
+                "trigger": "recover_love_letter",
+                "xp_flat": 8
+              }
+            ]
+          }
+        },
+        {
+          "scenario_index": 2,
+          "title": "Scenario 2: The Swamps of the Shadow Deep",
+          "narrative_intro": "The stairs open into a sunken bog filled with deep brackish water, rotting ruins, and lurking undead.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.0,
+              "length_feet": 2.0
+            },
+            "terrain": [
+              {
+                "type": "stairway_marker",
+                "placement": "center of one table edge"
+              },
+              {
+                "type": "deep_water_belt",
+                "width_inches": 8.0,
+                "placement": "along stairway edge"
+              },
+              {
+                "type": "shallow_water_swamp",
+                "rough_ground": true,
+                "coverage": "remainder of table"
+              }
+            ],
+            "hero_deployment": {
+              "type": "edge_adjacent",
+              "marker": "stairway",
+              "max_distance_inches": 2.0
+            },
+            "markers": [
+              {
+                "type": "clue_marker",
+                "quantity": 3,
+                "placement": "center offset 1-10 inches in random direction, min 4 inches separation"
+              }
+            ],
+            "initial_enemies": [
+              {
+                "type": "Swamp Zombie",
+                "quantity": 3,
+                "placement": "adjacent_to_each_clue_marker"
+              }
+            ]
+          },
+          "pre_scenario_checks": [
+            {
+              "check": "Will (TN10) or Survival (TN10)",
+              "effect_on_fail": "Suffer 2 points damage from foul fumes."
+            }
+          ],
+          "mechanics": {
+            "target_point": null,
+            "clue_interaction": {
+              "trigger": "base_contact",
+              "cost_action": "ends_action_immediately",
+              "consume_marker": true,
+              "unique_results_only": true
+            }
+          },
+          "interaction_tables": {
+            "clue_marker_table": [
+              {
+                "roll_range": [
+                  1,
+                  4
+                ],
+                "result_id": "treasure_token",
+                "description": "Hero gains a treasure token."
+              },
+              {
+                "roll_range": [
+                  5,
+                  8
+                ],
+                "result_id": "strange_flowers",
+                "description": "Unusual purple flowers. Post-game Survival Roll (TN5) to study.",
+                "xp_reward": 5
+              },
+              {
+                "roll_range": [
+                  9,
+                  12
+                ],
+                "result_id": "lorenthian_corpse",
+                "description": "Corpse wearing a silver signet ring.",
+                "xp_reward": 5
+              },
+              {
+                "roll_range": [
+                  13,
+                  16
+                ],
+                "result_id": "arcane_runes",
+                "description": "Carved ruin. Read Runes (TN8) reveals magic spell fragment.",
+                "xp_reward": 8
+              },
+              {
+                "roll_range": [
+                  17,
+                  20
+                ],
+                "result_id": "bone_blade",
+                "description": "Sword made of bone. Armoury (TN6) to keep: +1 Fight against skeletons and zombies."
+              }
+            ]
+          },
+          "event_deck": {
+            "draw_phase": "Event Phase",
+            "draw_frequency": "every_turn",
+            "cards": [
+              {
+                "card": "Red Ace",
+                "effect": "Spawn 1 Swamp Zombie in combat with random hero in deep water (or opposite edge)."
+              },
+              {
+                "card": "Red 2",
+                "effect": "Spawn 1 Swamp Zombie in combat with random hero in deep water (or opposite edge)."
+              },
+              {
+                "card": "Red 3",
+                "effect": "Spawn 1 Swamp Zombie in random corner."
+              },
+              {
+                "card": "Red 4",
+                "effect": "Spawn 1 Swamp Zombie in random corner."
+              },
+              {
+                "card": "Red 5",
+                "effect": "Gnoll Patrol: 2 Gnoll Archers and 1 Gnoll Fighter appear at random edge (not stairway)."
+              },
+              {
+                "card": "Red 6",
+                "effect": "Sink Hole: Random hero trapped; Strength Roll (TN12) to move (+2 per unengaged ally within 1 inch)."
+              },
+              {
+                "card": "Red 7",
+                "effect": "Sink Hole: Random hero trapped; Strength Roll (TN12) to move (+2 per unengaged ally within 1 inch)."
+              },
+              {
+                "card": "Red 8",
+                "effect": "Spawn 1 Giant Fly at stairway base."
+              },
+              {
+                "card": "Red 9",
+                "effect": "Spawn 1 Giant Fly at stairway base."
+              },
+              {
+                "card": "Red 10",
+                "effect": "Heavy Rain: Line of sight reduced to 8 inches, shooting attacks suffer -2."
+              },
+              {
+                "card": "Red Jack",
+                "effect": "Infection: Random hero makes Health Roll (TN16) or becomes diseased for this and next scenario."
+              },
+              {
+                "card": "Red Queen",
+                "effect": "Frenzy: All evil creatures gain +2 Fight next turn."
+              }
+            ]
+          },
+          "end_conditions": {
+            "max_turns": 10,
+            "trigger": "turn_limit_or_heroes_exit_opposite_edge"
+          },
+          "outcome_and_progression": {
+            "post_scenario_task": "Navigation Roll (TN8) to map terrain.",
+            "next_step": "Scenario 3",
+            "healing": "all_figures_start_next_scenario_at_full_health",
+            "experience_rewards": [
+              {
+                "trigger": "kill_swamp_zombie_or_giant_fly",
+                "xp_per_unit": 2
+              },
+              {
+                "trigger": "kill_gnoll",
+                "xp_per_unit": 3
+              },
+              {
+                "trigger": "find_strange_flowers",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "study_flowers_successfully",
+                "xp_flat": 3
+              },
+              {
+                "trigger": "identify_spell_successfully",
+                "xp_flat": 8
+              },
+              {
+                "trigger": "find_signet_ring",
+                "xp_flat": 5
+              },
+              {
+                "trigger": "hero_exits_opposite_edge",
+                "xp_per_unit": 3
+              },
+              {
+                "trigger": "map_land_successfully",
+                "xp_flat": 5
+              }
+            ]
+          }
+        },
+        {
+          "scenario_index": 3,
+          "title": "Scenario 3: The Last Stand",
+          "narrative_intro": "You find an abandoned farmhouse where a band of Lorenthian soldiers and civilians are barricaded. A massive swarm of evil forces converges to wipe them out.",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": [
+              {
+                "type": "farmhouse",
+                "rooms": 2,
+                "placement": "table_center",
+                "features": [
+                  "doors",
+                  "windows"
+                ]
+              },
+              {
+                "type": "scattered_trees_and_rocks",
+                "density": "medium"
+              }
+            ],
+            "markers": [
+              {
+                "type": "treasure_token",
+                "quantity": 2,
+                "placement": "opposite sides of farmhouse, 12 inches away"
+              }
+            ],
+            "allied_survivors": {
+              "placement": "inside_farmhouse",
+              "units": [
+                {
+                  "type": "Man-at-Arms",
+                  "quantity": 1,
+                  "note": "Can upgrade to Knight with Leadership (TN12)"
+                },
+                {
+                  "type": "Archer",
+                  "quantity": 2
+                },
+                {
+                  "type": "Civilian",
+                  "quantity": 4
+                }
+              ]
+            },
+            "hero_deployment": {
+              "type": "radius_from_farmhouse",
+              "max_distance_inches": 6.0
+            }
+          },
+          "pre_scenario_checks": [
+            {
+              "skill": "Leadership",
+              "tn": 12,
+              "eligible_figures": "any_single_hero",
+              "on_success": {
+                "effect": "Upgrade Lorenthian Man-at-Arms to Knight"
+              }
+            }
+          ],
+          "mechanics": {
+            "initial_event_draw": 3,
+            "farmhouse_windows": "Evil creatures cannot enter through windows, but can attack across them.",
+            "target_point": "table_center"
+          },
+          "event_deck": {
+            "draw_phase": "Event Phase",
+            "draw_frequency": "turns_1_to_11",
+            "cards": [
+              {
+                "card": "Red Ace",
+                "effect": "Spawn 4 Gnoll Fighters at random table edge."
+              },
+              {
+                "card": "Red 2",
+                "effect": "Spawn 1 Gnoll Sergeant and 3 Gnoll Fighters at random table edge."
+              },
+              {
+                "card": "Red 3",
+                "effect": "Spawn 2 Gnoll Archers and 2 Gnoll Fighters at random table edge."
+              },
+              {
+                "card": "Red 4",
+                "effect": "Spawn 2 Gnoll Archers, 2 Gnoll Fighters, 1 Gnoll Sergeant at random table edge."
+              },
+              {
+                "card": "Red 5",
+                "effect": "Spawn 3 Zombies at random table edge."
+              },
+              {
+                "card": "Red 6",
+                "effect": "Spawn 3 Zombies at random table edge."
+              },
+              {
+                "card": "Red 7",
+                "effect": "Spawn 2 Giant Flies at random table edge."
+              },
+              {
+                "card": "Red 8",
+                "effect": "Spawn 2 Giant Flies at random table edge."
+              },
+              {
+                "card": "Red 9",
+                "effect": "Spawn 1 Troll at random table edge."
+              },
+              {
+                "card": "Red 10",
+                "effect": "Spawn 1 Troll at random table edge."
+              },
+              {
+                "card": "Red Jack",
+                "effect": "Spawn 1 Burrow Worm in center of farmhouse large room."
+              },
+              {
+                "card": "Red Queen",
+                "effect": "Ash storm: LOS max 10 inches; all heroes Will Roll (TN8) or take 2 damage."
+              },
+              {
+                "card": "Red King",
+                "effect": "Spawn 1 Giant Spider in corner of smaller farmhouse room."
+              },
+              {
+                "card": "Black Ace",
+                "effect": "Spawn 1 Giant Spider in corner of larger farmhouse room."
+              }
+            ]
+          },
+          "end_conditions": {
+            "max_turns": 12,
+            "trigger": "all_heroes_slain_or_turn_12_completed"
+          },
+          "outcome_and_progression": {
+            "mission_status": "complete",
+            "experience_rewards": [
+              {
+                "trigger": "kill_zombie_or_giant_fly",
+                "xp_per_unit": 2
+              },
+              {
+                "trigger": "kill_gnoll",
+                "xp_per_unit": 3
+              },
+              {
+                "trigger": "kill_troll",
+                "xp_per_unit": 8
+              },
+              {
+                "trigger": "kill_burrow_worm",
+                "xp_flat": 8
+              },
+              {
+                "trigger": "lorenthian_survivor_alive_at_end",
+                "xp_per_unit": 8
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mission_id": "M_BL",
+      "title": "Campaign: Burning Light",
+      "recommended_level": "5-15",
+      "narrative_briefing": "The rangers journey deep into the Shadow Deep to explore the ruined convent of St. Emilia and recover the holy healing relic, the Decanter of Burning Light. Locations can be explored non-linearly before launching the final showdown.",
+      "mechanics": {
+        "exploration_graph": {
+          "starting_locations": [
+            "A",
+            "B",
+            "C"
+          ],
+          "connections": {
+            "A": [
+              "B",
+              "C"
+            ],
+            "B": [
+              "A",
+              "C"
+            ],
+            "C": [
+              "A",
+              "B",
+              "D",
+              "E",
+              "F"
+            ],
+            "D": [
+              "C"
+            ],
+            "E": [
+              "C"
+            ],
+            "F": [
+              "C",
+              "G",
+              "H"
+            ],
+            "G": [
+              "F"
+            ],
+            "H": [
+              "F"
+            ]
+          }
+        },
+        "event_deck_construction": "Each scenario A-H uses 6 scenario Red cards + 2 Black cards from Shadow Deep deck (incrementing pairs: Ace/2 of Clubs, 3/4 Clubs, etc.). Scenario I uses 8 Red cards."
+      },
+      "scenarios": [
+        {
+          "scenario_letter": "A",
+          "title": "Scenario A: The Gatehouse",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.0,
+              "length_feet": 3.0
+            },
+            "terrain": "Three sections: main 2x2ft chamber with 3 dangling bodies; left locked 2x0.5ft room; right 2x0.5ft broken room with treasure token."
+          },
+          "initial_enemies": [
+            {
+              "type": "Ghoul",
+              "quantity": 1,
+              "placement": "random corner of main room"
+            },
+            {
+              "type": "Ogre",
+              "quantity": 1,
+              "placement": "center or far corner based on Stealth/Tracking check"
+            }
+          ],
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "dangling_body_guard",
+              "test": {
+                "skill": "Perception",
+                "tn": 12
+              },
+              "success_note": 112
+            },
+            {
+              "id": "B",
+              "target": "dangling_body_guard",
+              "test": {
+                "skill": "Survival",
+                "tn": 18
+              },
+              "success_note": 286,
+              "fail_note": 361
+            },
+            {
+              "id": "C",
+              "target": "dangling_body_messenger",
+              "test": {
+                "skill": "Perception",
+                "tn": 8
+              },
+              "success_note": 472
+            },
+            {
+              "id": "D",
+              "target": "locked_door_side_room",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 10
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 14
+                  }
+                ]
+              },
+              "success_note": 622
+            }
+          ]
+        },
+        {
+          "scenario_letter": "B",
+          "title": "Scenario B: The Ruined Chapel",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": "Smashed tower with 4-inch high second floor ledge, 4x4-inch side room, central 4-inch rubbish mound, stained glass window."
+          },
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "side_room_unlocked_door",
+              "note": 792
+            },
+            {
+              "id": "B",
+              "target": "rubbish_mound",
+              "test": {
+                "skill": "Ancient Lore",
+                "tn": 10
+              },
+              "success_note": 818
+            },
+            {
+              "id": "C",
+              "target": "second_story_ledge",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Climb",
+                    "tn": 8
+                  },
+                  {
+                    "skill": "Acrobatics",
+                    "tn": 12
+                  }
+                ]
+              },
+              "reward": "Treasure Token"
+            },
+            {
+              "id": "D",
+              "target": "stained_glass_window",
+              "test": {
+                "stat": "Will"
+              },
+              "thresholds": [
+                {
+                  "min": 16,
+                  "note": 567
+                },
+                {
+                  "min": 12,
+                  "note": 214
+                },
+                {
+                  "min": 8,
+                  "note": 901
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario_letter": "C",
+          "title": "Scenario C: The Courtyard",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": "Central brackish fountain with St. Emilia statue, 2 shacks, broken cart, scrawled wall."
+          },
+          "initial_enemies": [
+            {
+              "type": "Skeleton",
+              "quantity": 4,
+              "placement": "around fountain"
+            },
+            {
+              "type": "Skeletal Knight",
+              "quantity": 2,
+              "placement": "corners opposite entry"
+            }
+          ],
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "fountain_statue",
+              "test": {
+                "skill": "Perception",
+                "tn": 6
+              },
+              "thresholds": [
+                {
+                  "min": 16,
+                  "note": 989
+                },
+                {
+                  "min": 10,
+                  "note": 702
+                },
+                {
+                  "min": 6,
+                  "note": 315
+                }
+              ]
+            },
+            {
+              "id": "B",
+              "target": "broken_cart",
+              "test": {
+                "stat": "Strength",
+                "tn": 12
+              },
+              "success_note": 151
+            },
+            {
+              "id": "C",
+              "target": "locked_shack_1",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 8
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 15
+                  }
+                ]
+              },
+              "success_note": 238
+            },
+            {
+              "id": "D",
+              "target": "locked_shack_2",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 8
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 15
+                  }
+                ]
+              },
+              "success_note": 444
+            },
+            {
+              "id": "E",
+              "target": "scrawled_wall",
+              "test": {
+                "skill": "Read Runes",
+                "tn": 15
+              },
+              "success_note": 649
+            }
+          ]
+        },
+        {
+          "scenario_letter": "D",
+          "title": "Scenario D: The Library",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.0,
+              "length_feet": 2.0
+            },
+            "floors": 2,
+            "terrain": "Flooded 1st level with bookcase island and stairs; 2nd level with desk, bookcases, 2 side rooms."
+          },
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "flooded_bookcase",
+              "test": {
+                "skill": "Navigation",
+                "tn": 8
+              },
+              "success_note": 269
+            },
+            {
+              "id": "B",
+              "target": "librarian_corpse_desk",
+              "test": {
+                "skill": "Read Runes",
+                "tn": 8
+              },
+              "thresholds": [
+                {
+                  "min": 12,
+                  "note": 846
+                },
+                {
+                  "min": 8,
+                  "note": 502
+                }
+              ]
+            },
+            {
+              "id": "C",
+              "target": "religious_tracts_shelf",
+              "test": {
+                "skill": "Ancient Lore",
+                "tn": 12
+              },
+              "success_note": 337
+            },
+            {
+              "id": "D",
+              "target": "whirring_book_trap",
+              "note": 499,
+              "then_test": {
+                "or": [
+                  {
+                    "skill": "Ancient Lore",
+                    "tn": 10
+                  },
+                  {
+                    "skill": "Read Runes",
+                    "tn": 10
+                  }
+                ]
+              },
+              "success_note": 927
+            },
+            {
+              "id": "E",
+              "target": "locked_side_room_1",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 6
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 8
+                  }
+                ]
+              },
+              "success_note": 172
+            },
+            {
+              "id": "F",
+              "target": "locked_side_room_2",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 6
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 8
+                  }
+                ]
+              },
+              "success_note": 609
+            }
+          ]
+        },
+        {
+          "scenario_letter": "E",
+          "title": "Scenario E: The Herb Store",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": "Apothecary table center, Darkroot body in corner, 4 cupboards against walls."
+          },
+          "initial_enemies": [
+            {
+              "type": "Darkroot Body",
+              "quantity": 1
+            },
+            {
+              "type": "Darkroot Vine",
+              "quantity": 4
+            }
+          ],
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "broken_cupboard",
+              "note": 975
+            },
+            {
+              "id": "B",
+              "target": "locked_cupboard_1",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 10
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 16
+                  }
+                ]
+              },
+              "note": 884
+            },
+            {
+              "id": "C",
+              "target": "apothecary_table",
+              "test": {
+                "skill": "Perception",
+                "tn": 12
+              },
+              "success_note": 398
+            },
+            {
+              "id": "D",
+              "target": "locked_cupboard_2",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 10
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 16
+                  }
+                ]
+              },
+              "note": 229
+            },
+            {
+              "id": "E",
+              "target": "unlocked_cupboard",
+              "note": 128
+            }
+          ]
+        },
+        {
+          "scenario_letter": "F",
+          "title": "Scenario F: The Hospital",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": "Rows of 8 beds enveloped in web cocoons, stairs to upper floor."
+          },
+          "initial_enemies": [
+            {
+              "type": "Giant Spider",
+              "quantity": 5
+            }
+          ],
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 873
+            },
+            {
+              "id": "B",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 837
+            },
+            {
+              "id": "C",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 718
+            },
+            {
+              "id": "D",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 675
+            },
+            {
+              "id": "E",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 598
+            },
+            {
+              "id": "F",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 407
+            },
+            {
+              "id": "G",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 355
+            },
+            {
+              "id": "H",
+              "target": "cocoon_bed",
+              "test": {
+                "stat": "Strength",
+                "tn": 8
+              },
+              "note": 251
+            }
+          ]
+        },
+        {
+          "scenario_letter": "G",
+          "title": "Scenario G: The Abbess' Quarters",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": "Desk with corpse of old nun, bookcases, broken shrine to St. Emilia."
+          },
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "abbess_corpse_desk",
+              "note": 326
+            },
+            {
+              "id": "B",
+              "target": "shrine_statue",
+              "test": {
+                "stat": "Will",
+                "tn": 8
+              },
+              "note": 777
+            }
+          ]
+        },
+        {
+          "scenario_letter": "H",
+          "title": "Scenario H: The Dormitory",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": "Three narrow 1.5-inch walkways across floor chasms, 4 chests against far wall."
+          },
+          "points_of_interest": [
+            {
+              "id": "A",
+              "target": "chest_locked",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 7
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 10
+                  }
+                ]
+              },
+              "note": 518
+            },
+            {
+              "id": "B",
+              "target": "chest_unlocked",
+              "note": 614
+            },
+            {
+              "id": "C",
+              "target": "chest_unlocked",
+              "note": 728
+            },
+            {
+              "id": "D",
+              "target": "chest_locked",
+              "test": {
+                "or": [
+                  {
+                    "skill": "Pick Lock",
+                    "tn": 7
+                  },
+                  {
+                    "stat": "Strength",
+                    "tn": 10
+                  }
+                ]
+              },
+              "note": 803
+            }
+          ]
+        },
+        {
+          "scenario_letter": "I",
+          "title": "Scenario I: The Final Showdown",
+          "table_setup": {
+            "dimensions": {
+              "width_feet": 2.5,
+              "length_feet": 2.5
+            },
+            "terrain": "Courtyard ruins with three escape exits across the table."
+          },
+          "initial_enemies": [
+            {
+              "type": "Terror Wing",
+              "quantity": 1,
+              "placement": "center exit"
+            },
+            {
+              "type": "Gnoll Fighter",
+              "quantity": 2,
+              "placement": "flanking exits"
+            },
+            {
+              "type": "Gnoll Archer",
+              "quantity": 2,
+              "placement": "flanking exits"
+            },
+            {
+              "type": "Wolf",
+              "quantity": 2,
+              "placement": "flanking exits"
+            }
+          ],
+          "event_deck": {
+            "cards": [
+              {
+                "card": "Red Ace",
+                "effect": "Terror Wing elemental magic attack +5 against random hero."
+              },
+              {
+                "card": "Red 2",
+                "effect": "Terror Wing elemental magic attack +5 against random hero."
+              },
+              {
+                "card": "Red 3",
+                "effect": "Spawn 1 Shadow Knight within 3 inches of Terror Wing."
+              },
+              {
+                "card": "Red 4",
+                "effect": "Spawn 1 Wolf in front of random exit."
+              },
+              {
+                "card": "Red 5",
+                "effect": "Spawn 1 Wolf in front of random exit."
+              },
+              {
+                "card": "Red 6",
+                "effect": "Terror Wing shriek: Heroes make Will Roll (TN12) or lose next activation."
+              },
+              {
+                "card": "Red 7",
+                "effect": "Storm: All shooting attacks at -2."
+              },
+              {
+                "card": "Red 8",
+                "effect": "Image of St. Emilia: 2 heroes restored to full Health and gain +2 Fight."
+              }
+            ]
+          },
+          "end_conditions": {
+            "outcomes": {
+              "escaped_with_decanter": {
+                "note": 851,
+                "xp": 100
+              },
+              "escaped_without_decanter": {
+                "note": 759,
+                "xp": 75
+              },
+              "all_heroes_slain": {
+                "note": 661
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
