@@ -1,15 +1,17 @@
 import React from 'react';
 import { useGameStore } from '../store/useGameStore';
-import { Shield, FastForward, Bot, ScrollText, Users } from 'lucide-react';
+import { Shield, FastForward, Bot, ScrollText, Users, BookOpen } from 'lucide-react';
 
 interface TurnMachineBarProps {
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
+  onOpenGuide?: () => void;
 }
 
 export const TurnMachineBar: React.FC<TurnMachineBarProps> = ({
   isCollapsed = false,
   onToggleCollapse,
+  onOpenGuide,
 }) => {
   const {
     turnNumber,
@@ -104,6 +106,17 @@ export const TurnMachineBar: React.FC<TurnMachineBarProps> = ({
             className="px-3 py-1.5 bg-rose-900/80 hover:bg-rose-800 border border-rose-700/60 text-rose-100 font-bold text-xs rounded-lg flex items-center gap-1.5 transition-colors shadow-md"
           >
             <Bot className="w-3.5 h-3.5" /> Auto-Execute AI
+          </button>
+        )}
+
+        {onOpenGuide && (
+          <button
+            onClick={onOpenGuide}
+            className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 border border-amber-900/40 text-amber-300 font-bold text-xs rounded-lg flex items-center gap-1.5 transition-colors"
+            title="Guide des Actions du Joueur"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            <span>Guide Règles</span>
           </button>
         )}
 

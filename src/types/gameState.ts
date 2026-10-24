@@ -1,6 +1,24 @@
-import type { Stats, BestiaryEntry } from './gameData';
+import type { Stats, BestiaryEntry, TerrainProperties } from './gameData';
 
 export type TurnPhase = 'ranger' | 'creature' | 'companion' | 'event';
+
+export type TerrainShape = 'box' | 'circle' | 'line' | 'zone';
+
+export interface TerrainObject {
+  id: string;
+  name: string;
+  type: string;
+  shape: TerrainShape;
+  x: number; // center X in inches
+  y: number; // center Y in inches
+  widthInches: number;
+  lengthInches: number;
+  radiusInches: number;
+  rotationDegrees: number;
+  endX?: number; // for line segments
+  endY?: number;
+  properties: TerrainProperties;
+}
 
 export type TokenCategory =
   | 'ranger'

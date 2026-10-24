@@ -67,10 +67,126 @@ export interface EventCardEntry {
   }>;
 }
 
+export type TerrainPositionType =
+  | 'fixed_coordinates'
+  | 'radial_distribution'
+  | 'edge_offset'
+  | 'line_segment'
+  | 'procedural_scatter'
+  | 'zone_bounds';
+
+export interface FixedPosition {
+  type: 'fixed_coordinates';
+  x_inches: number;
+  y_inches: number;
+  rotation_degrees?: number;
+  z_elevation_inches?: number;
+}
+
+export interface RadialPosition {
+  type: 'radial_distribution';
+  origin: { x_inches: number; y_inches: number };
+  radius_inches: number;
+  angle_degrees?: number;
+  quantity?: number;
+  min_distance_to_heroes_inches?: number;
+}
+
+export interface EdgeOffsetPosition {
+  type: 'edge_offset';
+  edge: 'north' | 'south' | 'east' | 'west';
+  distance_from_edge_inches: number;
+  offset_along_edge_inches?: number;
+  orientation?: string;
+}
+
+export interface LineSegmentPosition {
+  type: 'line_segment';
+  start_point: { x_inches: number; y_inches: number };
+  end_point: { x_inches: number; y_inches: number };
+  width_inches: number;
+}
+
+export interface ZoneBoundsPosition {
+  type: 'zone_bounds';
+  x_min_inches: number;
+  x_max_inches: number;
+  y_min_inches: number;
+  y_max_inches: number;
+}
+
+export interface ProceduralScatterPosition {
+  type: 'procedural_scatter';
+  count: { min: number; max: number };
+  zone_bounds: {
+    x_min_inches: number;
+    x_max_inches: number;
+    y_min_inches: number;
+    y_max_inches: number;
+  };
+  min_separation_inches: number;
+  density?: string;
+  avoid_zones?: string[];
+}
+
+export type TerrainPositionDefinition =
+  | FixedPosition
+  | RadialPosition
+  | EdgeOffsetPosition
+  | LineSegmentPosition
+  | ZoneBoundsPosition
+  | ProceduralScatterPosition;
+
+export interface InteractiveDoorProperty {
+  id?: string;
+  locked: boolean;
+  isOpen?: boolean;
+  pick_lock_tn?: number;
+  strength_tn?: number;
+  contains_clue_marker?: boolean;
+}
+
+export interface TerrainProperties {
+  blocks_movement?: boolean;
+  blocks_los?: boolean;
+  rough_ground?: boolean;
+  interactive_door?: InteractiveDoorProperty;
+  burnable?: boolean;
+  burned?: boolean;
+  flammable_action_cost?: number;
+  elements?: Array<{
+    type: string;
+    shape: 'box' | 'circle' | 'line' | 'zone';
+    radius_inches?: number;
+    width_inches?: number;
+    length_inches?: number;
+    blocks_movement?: boolean;
+    blocks_los?: boolean;
+    rough_ground?: boolean;
+  }>;
+  sub_elements?: any[];
+  [key: string]: any;
+}
+
 export interface TerrainSetupItem {
+  id?: string;
+  name?: string;
   type: string;
+  shape?: 'box' | 'circle' | 'line' | 'zone';
   quantity?: string | number;
   layout?: string;
+  dimensions_inches?: {
+    width?: number;
+    length?: number;
+    height?: number;
+    radius?: number;
+    outer_width?: number;
+    outer_length?: number;
+    walkway_width?: number;
+    coverage?: string;
+  };
+  position?: TerrainPositionDefinition;
+  properties?: TerrainProperties;
   min_distance_to_heroes_inches?: number;
   density?: string;
   description?: string;

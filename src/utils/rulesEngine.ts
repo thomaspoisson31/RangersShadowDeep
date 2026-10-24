@@ -1,5 +1,6 @@
 import type { Token } from '../types/gameState';
 import type { Scenario, ClueTableEntry, EventCardEntry } from '../types/gameData';
+import { gameData } from './gameDataLoader';
 
 export interface CombatResult {
   attackerRoll: number;
@@ -277,14 +278,29 @@ export function resolveClueInteraction(
   };
 }
 
-// Event Deck Card resolution
+// Event Deck Card resolution (Scenario Event Deck or fallback to canonical Shadow Deep deck)
 export function drawEventCard(
   eventDeck: EventCardEntry[]
 ): { card: EventCardEntry; remainingDeck: EventCardEntry[] } | null {
-  if (eventDeck.length === 0) return null;
-  const drawnIndex = Math.floor(Math.random() * eventDeck.length);
-  const card = eventDeck[drawnIndex];
-  const remainingDeck = eventDeck.filter((_, idx) => idx !== drawnIndex);
+  if (eventDeck && eventDeck.length > 0) {
+    const drawnIndex = Math.floor(Math.random() * eventDeck.length);
+    const card = eventDeck[drawnIndex];
+    const remainingDeck = eventDeck.filter((_, idx) => idx !== drawnIndex);
+    return { card, remainingDeck };
+  }
 
-  return { card, remainingDeck };
+  // Fallback to canonical random_tables.shadow_deep_cards_deck
+  const shadowDeck = gameData.random_tables?.shadow_deep_cards_deck;
+  if (shadowDeck && shadowDeck.length > 0) {
+    const drawn = shadowDeck[Math.floor(Math.random() * shadowDeck.length)];
+    const card: EventCardEntry = {
+      card: drawn.card || 'Shadow Deep Card',
+      title: drawn.card,
+      description: drawn.effect || drawn.description || 'Shadow Deep Card Drawn',
+      effect: drawn.effect,
+    };
+    return { card, remainingDeck: [] };
+  }
+
+  return null;
 }

@@ -19,10 +19,15 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
     boardConfig,
     tokens,
     selectedTokenId,
+    terrainObjects,
+    selectedTerrainId,
     activeTool,
     rulerMeasurement,
     selectToken,
+    selectTerrain,
     moveToken,
+    toggleDoorState,
+    toggleBurnableState,
     setBoardConfig,
     setRulerMeasurement,
     calibrateScale,
@@ -107,6 +112,7 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
     // If clicked on stage background
     if (e.target === e.target.getStage() || e.target.name() === 'bg-rect') {
       selectToken(null);
+      selectTerrain(null);
     }
 
     const ptr = getPointerInches();
@@ -278,6 +284,97 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
         )}
       </div>
 
+      {/* Terrain Quick Info & Interaction Card Overlay */}
+      {selectedTerrainId && (() => {
+        const terrain = terrainObjects.find((t) => t.id === selectedTerrainId);
+        if (!terrain) return null;
+        const isDoor = !!terrain.properties.interactive_door;
+        const doorState = terrain.properties.interactive_door;
+        const isBurnable = !!terrain.properties.burnable;
+        const isBurned = !!terrain.properties.burned;
+
+        return (
+          <div className="absolute top-16 right-4 z-20 bg-stone-900/95 border border-amber-900/60 p-3.5 rounded-xl backdrop-blur-md shadow-2xl text-xs text-stone-200 max-w-xs space-y-2.5 animate-in fade-in">
+            <div className="flex items-center justify-between border-b border-stone-800 pb-1.5">
+              <div className="flex items-center gap-2 font-bold text-amber-400">
+                <Box className="w-4 h-4 text-amber-500" />
+                <span>{terrain.name}</span>
+              </div>
+              <button
+                onClick={() => selectTerrain(null)}
+                className="p-1 text-stone-500 hover:text-stone-300 rounded"
+                title="Désélectionner (fermer)"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="text-[11px] space-y-1 text-stone-300">
+              <div className="flex justify-between">
+                <span className="text-stone-400">Type:</span>
+                <span className="font-semibold text-stone-200 capitalize">{terrain.type}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-400">Forme:</span>
+                <span className="font-semibold text-stone-200 uppercase">{terrain.shape}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-400">Position:</span>
+                <span className="font-mono text-amber-300">({terrain.x.toFixed(1)}", {terrain.y.toFixed(1)}")</span>
+              </div>
+            </div>
+
+            {/* Physical Properties Badges */}
+            <div className="flex flex-wrap gap-1 pt-1">
+              {terrain.properties.blocks_movement && (
+                <span className="px-1.5 py-0.5 bg-rose-950/80 border border-rose-800/60 text-rose-300 text-[10px] rounded font-semibold">
+                  Bloque Déplacement
+                </span>
+              )}
+              {terrain.properties.blocks_los && !isBurned && (
+                <span className="px-1.5 py-0.5 bg-amber-950/80 border border-amber-800/60 text-amber-300 text-[10px] rounded font-semibold">
+                  Bloque Ligne de Vue
+                </span>
+              )}
+              {terrain.properties.rough_ground && (
+                <span className="px-1.5 py-0.5 bg-yellow-950/80 border border-yellow-800/60 text-yellow-300 text-[10px] rounded font-semibold">
+                  Terrain Difficile
+                </span>
+              )}
+            </div>
+
+            {/* Interactive Actions */}
+            <div className="pt-2 border-t border-stone-800 space-y-1.5">
+              {isDoor && doorState && (
+                <button
+                  onClick={() => toggleDoorState(terrain.id)}
+                  className={`w-full py-1.5 px-3 rounded font-bold text-xs transition-colors flex items-center justify-center gap-1.5 ${
+                    doorState.isOpen
+                      ? 'bg-emerald-700 hover:bg-emerald-600 text-white'
+                      : 'bg-amber-800 hover:bg-amber-700 text-amber-100'
+                  }`}
+                >
+                  {doorState.isOpen ? 'Porte Ouverte (Cliquer pour Fermer)' : 'Porte Fermée (Cliquer pour Ouvrir)'}
+                </button>
+              )}
+
+              {isBurnable && (
+                <button
+                  onClick={() => toggleBurnableState(terrain.id)}
+                  className={`w-full py-1.5 px-3 rounded font-bold text-xs transition-colors flex items-center justify-center gap-1.5 ${
+                    isBurned
+                      ? 'bg-stone-800 text-stone-400 hover:bg-stone-700'
+                      : 'bg-orange-700 hover:bg-orange-600 text-white'
+                  }`}
+                >
+                  {isBurned ? 'Nid Brûlé (Cliquer pour Réinitialiser)' : 'Mettre le feu au nid (Action Torche)'}
+                </button>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Token Quick Stat Overlay Card for Selected Token */}
       {selectedTokenId && (() => {
         const token = tokens.find((t) => t.id === selectedTokenId);
@@ -417,7 +514,120 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
           )}
         </Layer>
 
-        {/* Layer 2: Tokens (Rangers, Enemies, Clues, Doors) */}
+        {/* Layer 2: Terrain Objects (Buildings, Trees, Rivers, Doors) */}
+        <Layer>
+          {terrainObjects.map((t) => {
+            const isSelected = selectedTerrainId === t.id;
+            const pxX = t.x * ppi;
+            const pxY = t.y * ppi;
+            const widthPx = t.widthInches * ppi;
+            const lengthPx = t.lengthInches * ppi;
+            const radiusPx = t.radiusInches * ppi;
+            const rot = t.rotationDegrees || 0;
+
+            const isBurned = t.properties.burned;
+            const door = t.properties.interactive_door;
+
+            // Determine Fill and Stroke styling based on terrain type and state
+            let fill = '#3f3f46';
+            let stroke = isSelected ? '#f59e0b' : '#52525b';
+            let strokeWidth = isSelected ? 3 : 1.5;
+
+            if (t.type.includes('water') || t.type.includes('river') || t.type.includes('fountain') || t.type.includes('deep')) {
+              fill = 'rgba(14, 116, 144, 0.45)';
+              stroke = '#06b6d4';
+            } else if (t.type.includes('tree') || t.type.includes('nest') || t.type.includes('forest')) {
+              fill = isBurned ? 'rgba(69, 26, 3, 0.85)' : 'rgba(21, 128, 61, 0.55)';
+              stroke = isBurned ? '#ef4444' : '#22c55e';
+            } else if (t.type.includes('building') || t.type.includes('house') || t.type.includes('room') || t.type.includes('dungeon')) {
+              fill = 'rgba(39, 39, 42, 0.75)';
+              stroke = '#a1a1aa';
+            } else if (t.type.includes('swamp') || t.type.includes('mire')) {
+              fill = 'rgba(101, 163, 13, 0.25)';
+              stroke = '#84cc16';
+            } else if (t.type.includes('bridge') || t.type.includes('plank')) {
+              fill = 'rgba(180, 83, 9, 0.6)';
+              stroke = '#f59e0b';
+            }
+
+            return (
+              <Group
+                key={t.id}
+                x={pxX}
+                y={pxY}
+                rotation={rot}
+                onClick={() => selectTerrain(t.id)}
+                onTap={() => selectTerrain(t.id)}
+              >
+                {/* Shape rendering */}
+                {t.shape === 'circle' ? (
+                  <Circle
+                    radius={radiusPx}
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth={strokeWidth}
+                    dash={t.properties.rough_ground ? [4, 4] : undefined}
+                  />
+                ) : t.shape === 'line' ? (
+                  <Rect
+                    x={-widthPx / 2}
+                    y={-lengthPx / 2}
+                    width={widthPx}
+                    height={lengthPx}
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth={strokeWidth}
+                    cornerRadius={3}
+                  />
+                ) : (
+                  // 'box' or 'zone'
+                  <Rect
+                    x={-widthPx / 2}
+                    y={-lengthPx / 2}
+                    width={widthPx}
+                    height={lengthPx}
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth={strokeWidth}
+                    dash={t.shape === 'zone' ? [6, 4] : undefined}
+                    cornerRadius={4}
+                  />
+                )}
+
+                {/* Render Interactive Door visual marker if present */}
+                {door && (
+                  <Rect
+                    x={-12}
+                    y={-12}
+                    width={24}
+                    height={24}
+                    fill={door.isOpen ? '#10b981' : door.locked ? '#ef4444' : '#f59e0b'}
+                    stroke="#ffffff"
+                    strokeWidth={1.5}
+                    cornerRadius={3}
+                  />
+                )}
+
+                {/* Label Overlay */}
+                <KonvaText
+                  text={t.name.length > 18 ? `${t.name.substring(0, 16)}..` : t.name}
+                  fontSize={11}
+                  fontStyle="bold"
+                  fill="#f3f4f6"
+                  align="center"
+                  verticalAlign="middle"
+                  x={-widthPx / 2}
+                  y={-6}
+                  width={widthPx}
+                  shadowColor="black"
+                  shadowBlur={4}
+                />
+              </Group>
+            );
+          })}
+        </Layer>
+
+        {/* Layer 3: Tokens (Rangers, Enemies, Clues, Doors) */}
         <Layer>
           {tokens.map((token) => {
             const tokenPxX = token.x * ppi;
