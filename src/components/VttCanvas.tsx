@@ -4,6 +4,7 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 import { useGameStore } from '../store/useGameStore';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { ZoomIn, ZoomOut, RotateCcw, Ruler, MousePointer, Move, Scale, Box, Heart, Shield, Swords, Crosshair, X } from 'lucide-react';
+import { ThreeDTokenCanvas } from './ThreeDTokenCanvas';
 
 interface VttCanvasProps {
   is3dView?: boolean;
@@ -36,6 +37,7 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
   const stageRef = useRef<any>(null);
   const [stageScale, setStageScale] = useState<number>(1.0);
   const [stagePos, setStagePos] = useState<{ x: number; y: number }>({ x: 20, y: 20 });
+  const [loadedStlTokenIds, setLoadedStlTokenIds] = useState<Set<string>>(new Set());
 
   // Battlemap Image Loading
   const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null);
@@ -434,7 +436,7 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
 
       {/* Konva Stage Container with 3D perspective wrapper */}
       <div
-        className="w-full h-full transition-transform duration-500 origin-center"
+        className="w-full h-full transition-transform duration-500 origin-center relative"
         style={
           is3dView
             ? {
@@ -445,6 +447,19 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
             : {}
         }
       >
+        {/* 3D STL Token Overlay Layer when Vue 3D is active */}
+        {is3dView && (
+          <ThreeDTokenCanvas
+            tokens={tokens}
+            boardConfig={boardConfig}
+            selectedTokenId={selectedTokenId}
+            stagePos={stagePos}
+            stageScale={stageScale}
+            onSelectToken={selectToken}
+            onLoadedStlTokenIdsChange={setLoadedStlTokenIds}
+          />
+        )}
+
         <Stage
           ref={stageRef}
           width={window.innerWidth}
@@ -630,6 +645,12 @@ export const VttCanvas: React.FC<VttCanvasProps> = ({
         {/* Layer 3: Tokens (Rangers, Enemies, Clues, Doors) */}
         <Layer>
           {tokens.map((token) => {
+            const isStlLoaded = is3dView && loadedStlTokenIds.has(token.id);
+            // In 3D view, if a token's 3D STL mesh is loaded, hide the 2D base token body so only the 3D model is visible
+            if (isStlLoaded) {
+              return null;
+            }
+
             const tokenPxX = token.x * ppi;
             const tokenPxY = token.y * ppi;
             const radiusPx = token.radiusInches * ppi;
