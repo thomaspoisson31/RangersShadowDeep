@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Token, BoardConfig, LogEntry, TurnPhase } from '../types/gameState';
+import type { Token, BoardConfig, LogEntry, TurnPhase, TerrainObject } from '../types/gameState';
 import type { Scenario, EventCardEntry } from '../types/gameData';
 import { getBestiaryEntry } from '../utils/gameDataLoader';
+import { calculateTerrainInstances } from '../utils/terrainUtils';
 import {
   resolveMeleeCombat,
   resolveRangedAttack,
@@ -27,9 +28,11 @@ interface GameState {
   // Board configuration
   boardConfig: BoardConfig;
 
-  // VTT Tokens
+  // VTT Tokens & Terrains
   tokens: Token[];
   selectedTokenId: string | null;
+  terrainObjects: TerrainObject[];
+  selectedTerrainId: string | null;
 
   // Turn Machine State
   turnNumber: number;
@@ -50,6 +53,11 @@ interface GameState {
   setBoardConfig: (partial: Partial<BoardConfig>) => void;
   setActiveTool: (tool: 'select' | 'pan' | 'ruler' | 'calibrate') => void;
   setRulerMeasurement: (ruler: RulerMeasurement | null) => void;
+
+  // Terrain actions
+  selectTerrain: (id: string | null) => void;
+  toggleDoorState: (terrainId: string) => void;
+  toggleBurnableState: (terrainId: string) => void;
 
   // Token actions
   addToken: (token: Omit<Token, 'id'>) => string;
@@ -108,6 +116,8 @@ export const useGameStore = create<GameState>()(
 
   tokens: [],
   selectedTokenId: null,
+  terrainObjects: [],
+  selectedTerrainId: null,
 
   turnNumber: 1,
   currentPhase: 'ranger',
@@ -126,6 +136,12 @@ export const useGameStore = create<GameState>()(
     const widthInches = widthFeet * 12;
     const lengthInches = lengthFeet * 12;
     const centerInches = { x: widthInches / 2, y: lengthInches / 2 };
+
+    // Calculate real 2D terrain instances using scenario positioning algorithms
+    const calculatedTerrains = calculateTerrainInstances(scenario.table_setup.terrain, {
+      widthInches,
+      lengthInches,
+    });
 
     const newTokens: Token[] = [];
 
@@ -312,6 +328,8 @@ export const useGameStore = create<GameState>()(
       },
       tokens: newTokens,
       selectedTokenId: null,
+      terrainObjects: calculatedTerrains,
+      selectedTerrainId: null,
       turnNumber: 1,
       currentPhase: 'ranger',
       activeTokenId: null,
@@ -376,7 +394,59 @@ export const useGameStore = create<GameState>()(
   },
 
   selectToken: (id) => {
-    set({ selectedTokenId: id });
+    set({ selectedTokenId: id, selectedTerrainId: null });
+  },
+
+  selectTerrain: (id) => {
+    set({ selectedTerrainId: id, selectedTokenId: null });
+  },
+
+  toggleDoorState: (terrainId: string) => {
+    set((state) => ({
+      terrainObjects: state.terrainObjects.map((t) => {
+        if (t.id !== terrainId || !t.properties.interactive_door) return t;
+        const currentDoor = t.properties.interactive_door;
+        const newIsOpen = !currentDoor.isOpen;
+        return {
+          ...t,
+          properties: {
+            ...t.properties,
+            interactive_door: {
+              ...currentDoor,
+              isOpen: newIsOpen,
+              locked: newIsOpen ? false : currentDoor.locked,
+            },
+          },
+        };
+      }),
+    }));
+    const updated = get().terrainObjects.find((t) => t.id === terrainId);
+    if (updated?.properties.interactive_door) {
+      const stateStr = updated.properties.interactive_door.isOpen ? 'Ouverte' : 'Fermée';
+      get().addLog(`Porte de "${updated.name}" : ${stateStr}`, 'system');
+    }
+  },
+
+  toggleBurnableState: (terrainId: string) => {
+    set((state) => ({
+      terrainObjects: state.terrainObjects.map((t) => {
+        if (t.id !== terrainId || !t.properties.burnable) return t;
+        const newBurned = !t.properties.burned;
+        return {
+          ...t,
+          properties: {
+            ...t.properties,
+            burned: newBurned,
+            blocks_los: newBurned ? false : t.properties.blocks_los,
+          },
+        };
+      }),
+    }));
+    const updated = get().terrainObjects.find((t) => t.id === terrainId);
+    if (updated) {
+      const stateStr = updated.properties.burned ? 'Incendié / Brûlé' : 'Intact';
+      get().addLog(`Élément "${updated.name}" : ${stateStr}`, 'system');
+    }
   },
 
   advancePhase: () => {

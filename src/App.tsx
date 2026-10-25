@@ -9,6 +9,7 @@ import { CompanyRosterModal } from './components/CompanyRosterModal';
 import { SettingsModal } from './components/SettingsModal';
 import { AiGameMasterDrawer } from './components/AiGameMasterDrawer';
 import { GlobalRosterModal } from './components/GlobalRosterModal';
+import { PlayerActionGuideModal } from './components/PlayerActionGuideModal';
 import {
   Shield,
   Users,
@@ -23,6 +24,7 @@ import {
   Eye,
   ChevronUp,
   FileText,
+  BookOpen,
 } from 'lucide-react';
 
 export function App() {
@@ -37,6 +39,7 @@ export function App() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   const [isAiDrawerOpen, setIsAiDrawerOpen] = useState<boolean>(false);
   const [isGlobalRosterOpen, setIsGlobalRosterOpen] = useState<boolean>(false);
+  const [isPlayerGuideOpen, setIsPlayerGuideOpen] = useState<boolean>(false);
 
   // Collapsible UI panels state (collapsed by default as requested in 1.1)
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState<boolean>(true);
@@ -200,8 +203,17 @@ export function App() {
               {/* Actions Navigation & Save/Load */}
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setIsGlobalRosterOpen(true)}
+                  onClick={() => setIsPlayerGuideOpen(true)}
                   className="px-2.5 py-1.5 bg-amber-950 hover:bg-amber-900 border border-amber-800 rounded-lg text-xs font-semibold text-amber-300 flex items-center gap-1.5 transition-colors"
+                  title="Guide des Actions du Joueur"
+                >
+                  <BookOpen className="w-4 h-4 text-amber-400" />
+                  <span>Guide Actions</span>
+                </button>
+
+                <button
+                  onClick={() => setIsGlobalRosterOpen(true)}
+                  className="px-2.5 py-1.5 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs font-semibold text-amber-300 flex items-center gap-1.5 transition-colors"
                   title="Voir toutes les statistiques de tous les tokens"
                 >
                   <Eye className="w-4 h-4 text-amber-400" />
@@ -279,6 +291,7 @@ export function App() {
           <TurnMachineBar
             isCollapsed={isTurnBarCollapsed}
             onToggleCollapse={() => setIsTurnBarCollapsed(!isTurnBarCollapsed)}
+            onOpenGuide={() => setIsPlayerGuideOpen(true)}
           />
         </>
       )}
@@ -322,6 +335,11 @@ export function App() {
       <GlobalRosterModal
         isOpen={isGlobalRosterOpen}
         onClose={() => setIsGlobalRosterOpen(false)}
+      />
+
+      <PlayerActionGuideModal
+        isOpen={isPlayerGuideOpen}
+        onClose={() => setIsPlayerGuideOpen(false)}
       />
 
     </div>
